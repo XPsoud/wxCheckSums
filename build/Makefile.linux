@@ -1,0 +1,39 @@
+CFLAGS = `wx-config --cppflags` -DwxDEBUG_LEVEL=0
+BASE_SRCDIR = .
+CPP_SRCDIR = sources
+OUTPUT_DIR = bin
+
+EXEC_NAME = $(BASE_SRCDIR)/$(OUTPUT_DIR)/wxCheckSums
+INCLUDES = 
+
+BASE_OBJDIR = build
+SRC_OBJDIR = $(BASE_OBJDIR)/$(CPP_SRCDIR)
+
+CPP_SRC_FILES = $(wildcard $(BASE_SRCDIR)/$(CPP_SRCDIR)/*.cpp)
+OBJ_SRC_FILES = $(CPP_SRC_FILES:$(BASE_SRCDIR)/$(CPP_SRCDIR)/%.cpp=$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o)
+DEP_SRC_FILES = $(OBJ_SRC_FILES:$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o=$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.d)
+
+LIBS = `wx-config --libs` -lfontconfig
+
+all : $(EXEC_NAME)
+
+clean : minclean
+	rm -f $(EXEC_NAME)
+
+minclean :
+	rm -rf $(BASE_OBJDIR)/$(CPP_SRCDIR)
+
+prebuild :
+	@mkdir -p $(BASE_OBJDIR)/$(CPP_SRCDIR)
+
+-include $(DEP_SRC_FILES)
+
+$(EXEC_NAME) : prebuild $(OBJ_SRC_FILES)
+	@echo Linking executable file \"$(EXEC_NAME)\"
+	@g++ -o $(EXEC_NAME) $(OBJ_SRC_FILES) $(LIBS)
+
+$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o: $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.cpp $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.h
+	@echo Compiling $<
+	@g++ -MMD $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+.PHONY: clean minclean

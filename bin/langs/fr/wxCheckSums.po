@@ -1,0 +1,127 @@
+# Message catalog file template for wxCheckSums
+# Copyright (C) 2017 Xaviou
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wxCheckSums\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-06 10:57+0100\n"
+"PO-Revision-Date: 2017-09-06 11:12+0100\n"
+"Last-Translator: \n"
+"Language-Team: Xaviou <x.psoud@gmail.com>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../../\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: sources\n"
+
+#: sources/dlgabout.cpp:19
+msgid "Made with"
+msgstr "Créé avec"
+
+#: sources/dlgoptions.cpp:11
+msgid "Preferences"
+msgstr "Préférences"
+
+#: sources/dlgoptions.cpp:48
+msgid "Position of the main window: "
+msgstr "Position de la fenêtre principale :"
+
+#: sources/dlgoptions.cpp:49
+msgid "Position of the main window at application startup"
+msgstr "Position de la fenêtre principale au démarrage de l'application"
+
+#: sources/dlgoptions.cpp:52
+msgid "Predefined position"
+msgstr "Position prédéfinie"
+
+#: sources/dlgoptions.cpp:54
+msgid "Last registered position"
+msgstr "Dernière position enregistrée"
+
+#: sources/dlgoptions.cpp:58
+msgid "Predefined positions:"
+msgstr "Positions prédéfinies :"
+
+#: sources/dlgoptions.cpp:59
+msgid "Top-Left"
+msgstr "Haut-Gauche"
+
+#: sources/dlgoptions.cpp:59
+msgid "Top-Center"
+msgstr "Centre-Haut"
+
+#: sources/dlgoptions.cpp:59
+msgid "Top-Right"
+msgstr "Haut-Droit"
+
+#: sources/dlgoptions.cpp:60
+msgid "Middle-Left"
+msgstr "Milieu-Gauche"
+
+#: sources/dlgoptions.cpp:60
+msgid "Center-Screen"
+msgstr "Centre-Écran"
+
+#: sources/dlgoptions.cpp:60
+msgid "Middle-Right"
+msgstr "Milieu-Droit"
+
+#: sources/dlgoptions.cpp:61
+msgid "Bottom-Left"
+msgstr "Bas-Gauche"
+
+#: sources/dlgoptions.cpp:61
+msgid "Bottom-Center"
+msgstr "Centre-Bas"
+
+#: sources/dlgoptions.cpp:61
+msgid "Bottom-Right"
+msgstr "Bas-Droit"
+
+#: sources/dlgoptions.cpp:75
+msgid "Misc : "
+msgstr "Divers :"
+
+#: sources/dlgoptions.cpp:76
+msgid "Allow only one instance of the application"
+msgstr "N'autoriser qu'une seule instance de l'application"
+
+#: sources/dlgoptions.cpp:78
+msgid "Keep the interface language in English (restart needed)"
+msgstr "Conserver l'interface en anglais (redémarrage nécessaire)"
+
+#: sources/dlgoptions.cpp:83
+msgid "General"
+msgstr "Général"
+
+#: sources/main.cpp:57
+msgid "An other instance of this application is already running !"
+msgstr "Une autre instance de cette application est déjà en train de tourner !"
+
+#: sources/main.cpp:57
+msgid "Multiple instances forbidden"
+msgstr "Instances multiples interdites"
+
+#: sources/mainframe.cpp:88
+msgid "Edit application settings"
+msgstr "Éditer les réglages de l'application"
+
+#: sources/mainframe.cpp:158
+msgid ""
+"You changed the translation settings.\n"
+"You must restart the application to see this in effect."
+msgstr ""
+"Vous avez modifié les réglages de traduction.\n"
+"Vous devez redémarrer l'application pour que cela soit effectif."
+
+#: sources/mainframe.cpp:158
+msgid "Restart needed"
+msgstr "Redémarrage nécessaire"
+
+#: sources/appversion.h:13
+msgid "wxCheckSums Application"
+msgstr "Application wxCheckSums"

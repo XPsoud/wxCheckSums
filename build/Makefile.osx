@@ -1,0 +1,78 @@
+ifeq ($(OS_Detected), Darwin)
+#############################################################################
+# Application configuration
+#############################################################################
+
+AppName = wxCheckSums
+srcdir = ./sources
+resdir = ./resources
+AppExe = ./bin/$(AppName)
+AppBundle = ./bin/$(AppName).app
+
+APP_VERSION_MAJOR = `cat sources/appversion.h | tr -d '\r\n\t ' | sed -e 's/.*VERSION_MAJOR\([0-9]*\).*/\1/'`
+APP_VERSION_MINOR = `cat sources/appversion.h | tr -d '\r\n\t ' | sed -e 's/.*VERSION_MINOR\([0-9]*\).*/\1/'`
+APP_VERSION_REV = `cat sources/appversion.h | tr -d '\r\n\t ' | sed -e 's/.*VERSION_REV\([0-9]*\).*/\1/'`
+APP_VERSION =$(APP_VERSION_MAJOR).$(APP_VERSION_MINOR).$(APP_VERSION_REV)
+
+SETFILE = SetFile
+NM = nm
+LIBS= `wx-config --libs`
+CXXFLAGS= `wx-config --cxxflags`
+INCLUDES= 
+
+CPP_SRC_FILES = $(wildcard $(srcdir)/*.cpp)
+OBJ_SRC_FILES = $(CPP_SRC_FILES:$(srcdir)/%.cpp=build/sources/%.o)
+DEP_SRC_FILES = $(OBJ_SRC_FILES:build/sources/%.o=build/sources/%.d)
+
+__app__mac_setfilecmd = \
+	$(SETFILE) -t APPL $(AppExe)
+
+### Targets: ###
+
+all: prebuild $(AppExe) App_Bundle
+
+clean: minclean
+	rm -rf $(AppBundle)
+
+minclean:
+	rm -rf ./build/sources
+	rm -f $(AppExe)
+
+prebuild:
+	@mkdir -p build/sources
+
+$(AppExe): $(OBJ_SRC_FILES)
+	@echo Linking executable $@
+	@g++ -o $@ $(OBJ_SRC_FILES) $(LIBS)
+	@echo Preparing executable for bundle
+	@$(__app__mac_setfilecmd)
+
+$(AppBundle)/Contents/PkgInfo: $(AppExe) ./sources/Info.plist.in ./graphx/wxmac.icns
+	@echo Creating Application Bundle
+	@mkdir -p $(AppBundle)/Contents
+	@mkdir -p $(AppBundle)/Contents/MacOS
+	@mkdir -p $(AppBundle)/Contents/Resources
+
+	@sed -e "s/IDENTIFIER/`echo $(srcdir) | sed -e 's,\.\./,,g' | sed -e 's,/,.,g'`/" \
+	-e "s/EXECUTABLE/$(AppName)/" \
+	-e "s/VERSION/$(APP_VERSION)/" \
+	./sources/Info.plist.in >$(AppBundle)/Contents/Info.plist
+
+	@/bin/echo "APPL????" >$(AppBundle)/Contents/PkgInfo
+
+	@mv -f $(AppExe) $(AppBundle)/Contents/MacOS/$(AppName)
+	@cp -f ./graphx/wxmac.icns $(AppBundle)/Contents/Resources/wxmac.icns
+	@cp -R ./bin/langs $(AppBundle)/Contents/Resources/
+	@find $(AppBundle) -name *.po -exec rm {} \;
+
+App_Bundle: $(AppBundle)/Contents/PkgInfo
+
+-include $(DEP_SRC_FILES)
+
+build/sources/%.o: sources/%.cpp sources/%.h
+	@echo Compiling $<
+	@g++ -c -MMD -o $@ $(CXXFLAGS) $(INCLUDES) $<
+
+.PHONY: all clean App_Bundle minclean
+
+endif

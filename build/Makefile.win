@@ -1,0 +1,82 @@
+SYS := $(shell gcc -dumpmachine)
+
+ifeq ($(SYS), mingw32)
+ARCHI=32
+else
+ifneq (, $(findstring w64, $(SYS)))
+ARCHI=64
+else
+endif
+endif
+
+# Path to the wxWidgets base install dir
+WXWIN=C:\wx31
+# Sub path of the wxWidgets libs config file
+WXCFG=gcc_dll$(ARCHI)\mswu
+# Path of the wx-config executable
+WXCONFIG_EXE=wx-config.exe
+# Name of the executable to create
+BASE_EXEC_NAME = wxCheckSums$(ARCHI)
+
+APP_SRCDIR = sources
+OUTPUT_DIR = bin
+
+WXCONFIG=$(WXCONFIG_EXE) --prefix=$(WXWIN) --wxcfg=$(WXCFG)
+CFLAGS = $(shell $(WXCONFIG) --cppflags) -O2 -DwxDEBUG_LEVEL=0
+RCFLAGS = -I$(WXWIN)/lib/$(WXCFG) -I$(WXWIN)\include
+
+EXEC_NAME = $(OUTPUT_DIR)/$(BASE_EXEC_NAME).exe
+INCLUDES = 
+
+BASE_BUILDDIR = build
+BUILD_DIR = Release-w$(ARCHI)
+BASE_OBJDIR = $(BASE_BUILDDIR)/$(BUILD_DIR)
+APP_OBJDIR = $(BASE_OBJDIR)/$(APP_SRCDIR)
+
+APP_SRC_FILES = $(wildcard $(APP_SRCDIR)/*.cpp)
+APP_OBJ_FILES = $(APP_SRC_FILES:$(APP_SRCDIR)/%.cpp=$(BASE_OBJDIR)/$(APP_SRCDIR)/%.o)
+APP_DEP_FILES = $(APP_OBJ_FILES:$(BASE_OBJDIR)/$(APP_SRCDIR)/%.o=$(BASE_OBJDIR)/$(APP_SRCDIR)/%.d)
+
+APPRES_SRC_FILES = $(wildcard $(APP_SRCDIR)/*.rc)
+APPRES_OBJ_FILES = $(APPRES_SRC_FILES:$(APP_SRCDIR)/%.rc=$(BASE_OBJDIR)/$(APP_SRCDIR)/%.res)
+
+WXLIBS = $(shell $(WXCONFIG) --libs base,core,xml,html)
+LIBS = $(WXLIBS)
+
+all : $(EXEC_NAME)
+
+clean : minclean
+	@echo Removing existing exe file
+	@del $(OUTPUT_DIR)\$(BASE_EXEC_NAME).exe
+
+minclean :
+	@echo Removing intermediate build files
+	@if exist "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)" del "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)\*.o"
+	@if exist "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)" del "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)\*.d"
+	@if exist "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)" del "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)\*.res"
+	@if exist "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)" rmdir "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)"
+
+prebuild :
+	@if not exist "$(BASE_BUILDDIR)\$(BUILD_DIR)" mkdir "$(BASE_BUILDDIR)\$(BUILD_DIR)"
+	@if not exist "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)" mkdir "$(BASE_BUILDDIR)\$(BUILD_DIR)\$(APP_SRCDIR)"
+
+infos :
+	@echo LIBS = $(LIBS)
+	@echo CFLAGS = $(CFLAGS)
+	@echo RCFLAGS = $(RCFLAGS)
+
+-include $(APP_DEP_FILES)
+
+$(EXEC_NAME) : prebuild $(APP_OBJ_FILES) $(APPRES_OBJ_FILES)
+	@echo Linking file $(EXEC_NAME)
+	@g++ -s -o $(EXEC_NAME) $(APP_OBJ_FILES) $(APPRES_OBJ_FILES) $(LIBS) -mwindows
+
+$(BASE_OBJDIR)/$(APP_SRCDIR)/%.o: $(APP_SRCDIR)/%.cpp $(APP_SRCDIR)/%.h
+	@echo Compiling $<
+	@g++ -MMD $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(BASE_OBJDIR)/$(APP_SRCDIR)/%.res: $(APP_SRCDIR)/%.rc
+	@echo Compiling $<
+	@windres.exe $(RCFLAGS) -J rc -O coff -i $< -o $@
+
+.PHONY: clean minclean infos
