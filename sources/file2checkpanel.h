@@ -19,9 +19,13 @@ class File2CheckPanel : public wxPanel
 		void OnFileDropped(wxCommandEvent &event);
 		void OnFilenameChanged(wxCommandEvent& event);
 		void OnResultChanged(wxCommandEvent& event);
+		void OnBtnCancelClicked(wxCommandEvent &event);
 		// Controls vars
+		wxBoxSizer *m_szrLine2;
 		wxTextCtrl *m_txtFileName, *m_txtResult;
-		wxButton *m_btnBrowse;
+		wxStaticText *m_lblHashType;
+		wxGauge *m_pgbProgress;
+		wxButton *m_btnBrowse, *m_btnCancel;
 };
 
 #endif // __FILE2CHECKPANEL_H_INCLUDED__

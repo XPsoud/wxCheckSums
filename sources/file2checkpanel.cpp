@@ -36,15 +36,22 @@ void File2CheckPanel::CreateControls(const wxString& title)
 				line1->Add(m_btnBrowse, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
 			box->Add(line1, 0, wxALL|wxEXPAND, 5);
 
-			wxBoxSizer* line2=new wxBoxSizer(wxHORIZONTAL);
-				wxStaticText* label=new wxStaticText(this, wxID_STATIC, _("MD5:"));
-				line2->Add(label, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+			m_szrLine2=new wxBoxSizer(wxHORIZONTAL);
+				m_lblHashType=new wxStaticText(this, wxID_STATIC, _("MD5:"));
+				m_szrLine2->Add(m_lblHashType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
 				m_txtResult=new wxTextCtrl(this, -1, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
 				m_txtResult->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE));
-				line2->Add(m_txtResult, 1, wxLEFT, 5);
-			box->Add(line2, 0, wxALL|wxEXPAND, 5);
+				m_szrLine2->Add(m_txtResult, 1, wxLEFT, 5);
+				m_pgbProgress=new wxGauge(this, -1, 100);
+				m_szrLine2->Add(m_pgbProgress, 1, wxALL|wxEXPAND, 0);
+				m_btnCancel=new wxButton(this, wxID_CANCEL, wxGetStockLabel(wxID_CANCEL, wxSTOCK_FOR_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+				m_szrLine2->Add(m_btnCancel, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
+			box->Add(m_szrLine2, 0, wxALL|wxEXPAND, 5);
 
 		mainsizer->Add(box, 1, wxALL|wxEXPAND, 5);
+
+		m_pgbProgress->Hide();
+		m_btnCancel->Hide();
 
 	SetSizer(mainsizer);
 
@@ -58,6 +65,7 @@ void File2CheckPanel::ConnectControls()
 	m_txtFileName->Bind(wxEVT_TEXT, &File2CheckPanel::OnFilenameChanged, this);
 	m_txtResult->Bind(wxEVT_TEXT, &File2CheckPanel::OnResultChanged, this);
 	Bind(wxEVT_FILES_DROPPED, &File2CheckPanel::OnFileDropped, this);
+	m_btnCancel->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCancelClicked, this);
 }
 
 void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
@@ -77,6 +85,11 @@ void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
 void File2CheckPanel::OnFileDropped(wxCommandEvent& event)
 {
 	m_txtFileName->SetValue(event.GetString());
+	m_lblHashType->Hide();
+	m_txtResult->Hide();
+	m_pgbProgress->Show();
+	m_btnCancel->Show();
+	m_szrLine2->Layout();
 }
 
 void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
@@ -88,4 +101,13 @@ void File2CheckPanel::OnResultChanged(wxCommandEvent& event)
 {
 	wxCommandEvent evt(wxEVT_CHECKSUM_CHANGED, GetId());
 	AddPendingEvent(evt);
+}
+
+void File2CheckPanel::OnBtnCancelClicked(wxCommandEvent& event)
+{
+	m_lblHashType->Show();
+	m_txtResult->Show();
+	m_pgbProgress->Hide();
+	m_btnCancel->Hide();
+	m_szrLine2->Layout();
 }
