@@ -13,7 +13,7 @@ bool MyApp::OnInit()
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Initializing a \"wxApp\" derived object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 
 	wxInitAllImageHandlers();
 	// Set application name

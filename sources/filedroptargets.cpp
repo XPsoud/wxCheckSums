@@ -6,7 +6,7 @@ SingleFileDropTarget::SingleFileDropTarget(wxWindow *dstHandler)
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"SingleFileDropTarget\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 	m_wndTarget=dstHandler;
 }
 
@@ -14,7 +14,7 @@ SingleFileDropTarget::~SingleFileDropTarget()
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Destroying a \"SingleFileDropTarget\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 }
 
 bool SingleFileDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames)

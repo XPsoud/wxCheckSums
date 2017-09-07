@@ -9,7 +9,7 @@ File2CheckPanel::File2CheckPanel(wxWindow* parent, const wxString& title)
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"File2CheckPanel\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 	SetMinSize(wxSize(450,-1));
 
 	CreateControls(title);
@@ -19,7 +19,7 @@ File2CheckPanel::~File2CheckPanel()
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Destroying a \"File2CheckPanel\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 }
 
 void File2CheckPanel::CreateControls(const wxString& title)

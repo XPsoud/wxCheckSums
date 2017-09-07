@@ -5,14 +5,14 @@ CheckSums::CheckSums(const wxString& text) :
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"CheckSums\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 }
 
 CheckSums::~CheckSums()
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Destroying a \"CheckSums\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 }
 
 wxString CheckSums::GetHexDigest(HashType type)

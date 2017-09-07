@@ -23,7 +23,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(NULL, -1, title),
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"MainFrame\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 
 	SetIcon(wxICON(appIcon)); // Defining app icon
 
@@ -70,7 +70,7 @@ MainFrame::~MainFrame()
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Destroying a \"MainFrame\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 }
 
 void MainFrame::CreateControls()

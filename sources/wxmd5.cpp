@@ -59,7 +59,7 @@ wxMD5::wxMD5(const wxString& text)
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"wxMD5\" object\n"));
-#endif // DEBUG
+#endif // __WXDEBUG__
 	Initialize();
 	if (!text.IsEmpty())
 	{
