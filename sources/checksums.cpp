@@ -15,6 +15,16 @@ CheckSums::~CheckSums()
 #endif // __WXDEBUG__
 }
 
+void CheckSums::Update(const unsigned char* buf, wxUint32 length)
+{
+	m_md5.Update(buf, length);
+}
+
+void CheckSums::Finalize()
+{
+	m_md5.Finalize();
+}
+
 wxString CheckSums::GetHexDigest(HashType type)
 {
 	switch(type)

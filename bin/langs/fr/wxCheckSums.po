@@ -5,9 +5,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-07 12:32+0100\n"
-"PO-Revision-Date: 2017-09-07 12:32+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2017-09-07 22:10+0100\n"
+"PO-Revision-Date: 2017-09-07 22:15+0100\n"
+"Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -98,17 +98,25 @@ msgstr "Conserver l'interface en anglais (redémarrage nécessaire)"
 msgid "General"
 msgstr "Général"
 
-#: sources/file2checkpanel.cpp:32
+#: sources/file2checkpanel.cpp:41
 msgid "..."
 msgstr "..."
 
-#: sources/file2checkpanel.cpp:33
+#: sources/file2checkpanel.cpp:42
 msgid "Open the file selection dialog box"
 msgstr "Ouvrir la boîte de dialogue de sélection de fichier"
 
-#: sources/file2checkpanel.cpp:38
+#: sources/file2checkpanel.cpp:47
 msgid "MD5:"
 msgstr "MD5 :"
+
+#: sources/filehashthread.cpp:54
+msgid "No valid file specified"
+msgstr "Pas de fichier valide spécifié"
+
+#: sources/filehashthread.cpp:62
+msgid "Unable to open the file"
+msgstr "Impossible d'ouvrir le fichier"
 
 #: sources/main.cpp:57
 msgid "An other instance of this application is already running !"
