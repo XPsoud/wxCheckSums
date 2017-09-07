@@ -1,5 +1,7 @@
 #include "file2checkpanel.h"
 
+#include "filedroptargets.h"
+
 wxDEFINE_EVENT(wxEVT_CHECKSUM_CHANGED, wxCommandEvent);
 
 File2CheckPanel::File2CheckPanel(wxWindow* parent, const wxString& title)
@@ -45,6 +47,9 @@ void File2CheckPanel::CreateControls(const wxString& title)
 		mainsizer->Add(box, 1, wxALL|wxEXPAND, 5);
 
 	SetSizer(mainsizer);
+
+	// Accept file dropped from file manager
+	m_txtFileName->SetDropTarget(new SingleFileDropTarget(this));
 }
 
 void File2CheckPanel::ConnectControls()
@@ -52,6 +57,7 @@ void File2CheckPanel::ConnectControls()
 	m_btnBrowse->Bind(wxEVT_BUTTON, &File2CheckPanel::OnButtonBrowseClicked, this);
 	m_txtFileName->Bind(wxEVT_TEXT, &File2CheckPanel::OnFilenameChanged, this);
 	m_txtResult->Bind(wxEVT_TEXT, &File2CheckPanel::OnResultChanged, this);
+	Bind(wxEVT_FILES_DROPPED, &File2CheckPanel::OnFileDropped, this);
 }
 
 void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
@@ -66,6 +72,11 @@ void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
 	if (fdlg.ShowModal()==wxID_CANCEL) return;
 
 	m_txtFileName->SetValue(fdlg.GetPath());
+}
+
+void File2CheckPanel::OnFileDropped(wxCommandEvent& event)
+{
+	m_txtFileName->SetValue(event.GetString());
 }
 
 void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)

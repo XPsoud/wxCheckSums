@@ -764,6 +764,12 @@
 		<Unit filename="../sources/file2checkpanel.h">
 			<Option virtualFolder="Interface/" />
 		</Unit>
+		<Unit filename="../sources/filedroptargets.cpp">
+			<Option virtualFolder="Misc/" />
+		</Unit>
+		<Unit filename="../sources/filedroptargets.h">
+			<Option virtualFolder="Misc/" />
+		</Unit>
 		<Unit filename="../sources/main.cpp">
 			<Option virtualFolder="Misc/" />
 		</Unit>

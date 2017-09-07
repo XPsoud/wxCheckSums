@@ -16,6 +16,7 @@ class File2CheckPanel : public wxPanel
 		void ConnectControls();
 		// Events handlers
 		void OnButtonBrowseClicked(wxCommandEvent& event);
+		void OnFileDropped(wxCommandEvent &event);
 		void OnFilenameChanged(wxCommandEvent& event);
 		void OnResultChanged(wxCommandEvent& event);
 		// Controls vars
