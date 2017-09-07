@@ -738,6 +738,12 @@
 		<Unit filename="../sources/dlgoptions.h">
 			<Option virtualFolder="Dialogs/" />
 		</Unit>
+		<Unit filename="../sources/file2checkpanel.cpp">
+			<Option virtualFolder="Interface/" />
+		</Unit>
+		<Unit filename="../sources/file2checkpanel.h">
+			<Option virtualFolder="Interface/" />
+		</Unit>
 		<Unit filename="../sources/main.cpp">
 			<Option virtualFolder="Misc/" />
 		</Unit>

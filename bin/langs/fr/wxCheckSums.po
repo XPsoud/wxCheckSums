@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-06 10:57+0100\n"
-"PO-Revision-Date: 2017-09-06 11:12+0100\n"
+"POT-Creation-Date: 2017-09-07 08:03+0100\n"
+"PO-Revision-Date: 2017-09-07 08:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
@@ -98,6 +98,18 @@ msgstr "Conserver l'interface en anglais (redémarrage nécessaire)"
 msgid "General"
 msgstr "Général"
 
+#: sources/file2checkpanel.cpp:32
+msgid "..."
+msgstr "..."
+
+#: sources/file2checkpanel.cpp:33
+msgid "Open the file selection dialog box"
+msgstr "Ouvrir la boîte de dialogue de sélection de fichier"
+
+#: sources/file2checkpanel.cpp:38
+msgid "MD5:"
+msgstr "MD5 :"
+
 #: sources/main.cpp:57
 msgid "An other instance of this application is already running !"
 msgstr "Une autre instance de cette application est déjà en train de tourner !"
@@ -106,11 +118,28 @@ msgstr "Une autre instance de cette application est déjà en train de tourner !
 msgid "Multiple instances forbidden"
 msgstr "Instances multiples interdites"
 
-#: sources/mainframe.cpp:88
+#: sources/mainframe.cpp:89
 msgid "Edit application settings"
 msgstr "Éditer les réglages de l'application"
 
-#: sources/mainframe.cpp:158
+#: sources/mainframe.cpp:117
+#, c-format
+msgid "File #%d"
+msgstr "Fichier N°%d"
+
+#: sources/mainframe.cpp:121
+msgid "1-2 files"
+msgstr "1-2 fichiers"
+
+#: sources/mainframe.cpp:125
+msgid "Multiple files"
+msgstr "Fichiers multiples"
+
+#: sources/mainframe.cpp:129
+msgid "Simple text"
+msgstr "Texte simple"
+
+#: sources/mainframe.cpp:188
 msgid ""
 "You changed the translation settings.\n"
 "You must restart the application to see this in effect."
@@ -118,7 +147,7 @@ msgstr ""
 "Vous avez modifié les réglages de traduction.\n"
 "Vous devez redémarrer l'application pour que cela soit effectif."
 
-#: sources/mainframe.cpp:158
+#: sources/mainframe.cpp:188
 msgid "Restart needed"
 msgstr "Redémarrage nécessaire"
 

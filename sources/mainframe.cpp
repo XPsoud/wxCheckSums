@@ -5,6 +5,7 @@
 #include "appversion.h"
 #include "dlgoptions.h"
 #include "settingsmanager.h"
+#include "file2checkpanel.h"
 
 #include <wx/display.h>
 #include <wx/filedlg.h>
@@ -102,7 +103,35 @@ void MainFrame::CreateControls()
 	SetMenuBar(menuBar);
 
 	// Controls
-	wxPanel *pnl=new wxPanel(this, -1);
+	m_nBook=new wxNotebook(this, -1);
+	wxPanel *page;
+	wxBoxSizer *szr, *szrMain;
+
+	szrMain=new wxBoxSizer(wxVERTICAL);
+
+	// "1 - 2 files" tab
+	page=new wxPanel(m_nBook, -1);
+	szr=new wxBoxSizer(wxVERTICAL);
+		for (int i=0; i<FILESPANEL_COUNT; ++i)
+		{
+			m_pnlFile[i]=new File2CheckPanel(page, wxString::Format(_("File #%d"), i+1));
+			szr->Add(m_pnlFile[i], 0, wxALL|wxEXPAND, 0);
+		}
+	page->SetSizer(szr);
+	m_nBook->AddPage(page, _("1-2 files"));
+
+	// "Multiple files" tab
+	page=new wxPanel(m_nBook, -1);
+	m_nBook->AddPage(page, _("Multiple files"));
+
+	// "Simple text" tab
+	page=new wxPanel(m_nBook, -1);
+	m_nBook->AddPage(page, _("Simple text"));
+
+	szrMain->Add(m_nBook, 1, wxALL|wxEXPAND, 0);
+
+	SetSizer(szrMain);
+	szrMain->SetSizeHints(this);
 }
 
 void MainFrame::ConnectControls()
