@@ -98,6 +98,21 @@ void File2CheckPanel::OnFileDropped(wxCommandEvent& event)
 
 void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
 {
+	wxString sFName=m_txtFileName->GetValue();
+	if (sFName.IsEmpty())
+		return;
+	if (!wxFileExists(sFName))
+	{
+		m_txtFileName->SetForegroundColour(*wxRED);
+		m_txtFileName->Refresh();
+		return;
+	}
+	else
+	{
+		m_txtFileName->SetForegroundColour(wxNullColour);
+		m_txtFileName->Refresh();
+	}
+
 	m_thread=new FileHashThread(this);
 	if (!m_thread->SetFile2Hash(m_txtFileName->GetValue()))
 	{
@@ -105,6 +120,8 @@ void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
 		m_thread=NULL;
 		return;
 	}
+	m_txtFileName->Disable();
+	m_btnBrowse->Disable();
 	m_thread->Run();
 }
 
@@ -118,6 +135,8 @@ void File2CheckPanel::OnBtnCancelClicked(wxCommandEvent& event)
 {
 	if (m_thread->IsRunning())
 	{
+		if (wxMessageBox(_("Stop calculation ?"), _("Confirmation"), wxICON_QUESTION|wxYES_NO|wxCENTER)!=wxYES)
+			return;
 		m_thread->Delete();
 	}
 	else
@@ -126,6 +145,8 @@ void File2CheckPanel::OnBtnCancelClicked(wxCommandEvent& event)
 		m_txtResult->Show();
 		m_pgbProgress->Hide();
 		m_btnCancel->Hide();
+		m_txtFileName->Enable();
+		m_btnBrowse->Enable();
 		m_szrLine2->Layout();
 	}
 }
@@ -142,10 +163,20 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 			m_btnCancel->Hide();
 			m_szrLine2->Layout();
 		}
+		m_txtFileName->Enable();
+		m_btnBrowse->Enable();
 		if (m_thread==NULL)
 			return;
-		for (int i=0; i<HT_COUNT; ++i)
-			m_sHash[i]=m_thread->GetHexDigest((HashType)i);
+		if (event.GetInt()!=-1)
+		{
+			for (int i=0; i<HT_COUNT; ++i)
+				m_sHash[i]=m_thread->GetHexDigest((HashType)i);
+		}
+		else
+		{
+			for (int i=0; i<HT_COUNT; ++i)
+				m_sHash[i]=wxEmptyString;
+		}
 
 		m_txtResult->SetValue(m_sHash[0]);
 
