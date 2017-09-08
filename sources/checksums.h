@@ -4,7 +4,6 @@
 #include <wx/wx.h>
 
 #include "wxmd5.h"
-#include "md5.h"
 
 enum HashType
 {
@@ -25,7 +24,6 @@ class CheckSums
 	protected:
 	private:
 		wxMD5 m_md5;
-		//MD5 m_md5;
 };
 
 #endif // __CHECKSUMBASE_H_INCLUDED__

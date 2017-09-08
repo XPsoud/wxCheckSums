@@ -30,3 +30,4 @@ wxCheckSums is a simple application for calculating checksums on files or simple
  - Files to check will can be given using the command line. If 1 or 2 files, the first tab should be activated. If more than 2 files, the second tab will be the one visible.
 #### Options : ####
  - Add an option to disable calculation for a type of hash
+ - Add an option to specify if hashes must be displayed uppercase or lowercase
