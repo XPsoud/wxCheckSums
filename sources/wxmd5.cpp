@@ -26,9 +26,9 @@
 #define S44 21
 
 // Basic MD5 functions.
-inline wxUint32 wxMD5::F(wxUint32 x, wxUint32 y, wxUint32 z) { return x&y | ~x&z; }
+inline wxUint32 wxMD5::F(wxUint32 x, wxUint32 y, wxUint32 z) { return (x&y) | (~x&z); }
 
-inline wxUint32 wxMD5::G(wxUint32 x, wxUint32 y, wxUint32 z) { return x&z | y&~z; }
+inline wxUint32 wxMD5::G(wxUint32 x, wxUint32 y, wxUint32 z) { return (x&z) | (y&~z); }
 
 inline wxUint32 wxMD5::H(wxUint32 x, wxUint32 y, wxUint32 z) { return x^y^z; }
 
@@ -68,6 +68,13 @@ wxMD5::wxMD5(const wxString& text)
 	}
 }
 
+wxMD5::~wxMD5()
+{
+#ifdef __WXDEBUG__
+	wxPrintf(_T("Destroying a \"wxMD5\" object\n"));
+#endif // __WXDEBUG__
+}
+
 void wxMD5::Initialize()
 {
 	m_bFinalized=false;
@@ -102,10 +109,10 @@ void wxMD5::Encode(wxUint8 output[], const wxUint32 input[], wxUint32 len)
 }
 
 // Apply MD5 algorithm on a block
-void wxMD5::Transform(const wxUint8 block[wxMD5_BlocSize])
+void wxMD5::Transform(const wxUint8 block[wxMD5_BlockSize])
 {
 	wxUint32 a = m_uiState[0], b = m_uiState[1], c = m_uiState[2], d = m_uiState[3], x[16];
-	Decode (x, block, wxMD5_BlocSize);
+	Decode (x, block, wxMD5_BlockSize);
 
 	/* Round 1 */
 	FF (a, b, c, d, x[ 0], S11, 0xd76aa478); /* 1 */
@@ -192,7 +199,7 @@ void wxMD5::Transform(const wxUint8 block[wxMD5_BlocSize])
 void wxMD5::Update(const unsigned char input[], wxUint32 length)
 {
 	// Compute number of bytes mod 64
-	wxUint32 index = m_uiCount[0] / 8 % wxMD5_BlocSize;
+	wxUint32 index = m_uiCount[0] / 8 % wxMD5_BlockSize;
 
 	// Update number of bits
 	if ((m_uiCount[0] += (length << 3)) < (length << 3))
@@ -212,7 +219,7 @@ void wxMD5::Update(const unsigned char input[], wxUint32 length)
 		Transform(m_uiBuffer);
 
 		// Transform chunks of blocksize (64 bytes)
-		for (i = firstpart; i + wxMD5_BlocSize <= length; i += wxMD5_BlocSize)
+		for (i = firstpart; i + wxMD5_BlockSize <= length; i += wxMD5_BlockSize)
 			Transform(&input[i]);
 
 		index = 0;
@@ -250,7 +257,7 @@ wxMD5& wxMD5::Finalize()
 		Encode(m_uiDigest, m_uiState, 16);
 
 		// Zeroize sensitive information.
-		memset(m_uiBuffer, 0, wxMD5_BlocSize);
+		memset(m_uiBuffer, 0, wxMD5_BlockSize);
 		memset(m_uiCount, 0, 2);
 
 		m_bFinalized=true;
