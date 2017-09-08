@@ -29,6 +29,24 @@ File2CheckPanel::~File2CheckPanel()
 #endif // __WXDEBUG__
 }
 
+bool File2CheckPanel::HasResult()
+{
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (!m_sHash[i].IsEmpty())
+			return true;
+	}
+	return false;
+}
+
+wxString File2CheckPanel::GetResult(HashType type)
+{
+	if ((type<=HT_UNKNOWN)||(type>+HT_COUNT))
+		return wxEmptyString;
+
+	return m_sHash[type];
+}
+
 void File2CheckPanel::CreateControls(const wxString& title)
 {
 	wxBoxSizer* mainsizer=new wxBoxSizer(wxVERTICAL);

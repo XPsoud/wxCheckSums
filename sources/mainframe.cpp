@@ -75,9 +75,17 @@ MainFrame::~MainFrame()
 
 void MainFrame::CreateControls()
 {
-	// Status bar
-	CreateStatusBar(2);
-	wxString sTxt=wxGetApp().GetBuildInfos();
+	// Status bar (2 fields)
+	wxStatusBar* stb=CreateStatusBar(2);
+	// String to display in the second field
+	wxString sTxt=_T(" ") + wxGetApp().GetBuildInfos();
+	// Calculation of the needed width for this text
+	int widths[2];
+	wxClientDC dc(stb);
+	dc.GetTextExtent(sTxt, &widths[1], &widths[0]);
+	widths[0]=-1;
+	stb->SetStatusWidths(2, widths);
+
 	SetStatusText(sTxt, 1);
 
 	// Menu bar of the main window
@@ -141,6 +149,8 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_MOVE, &MainFrame::OnMove, this);
 	Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
 
+	Bind(wxEVT_CHECKSUM_CHANGED, &MainFrame::OnCheckSumsChanged, this);
+
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
 	Bind(wxEVT_MENU, &MainFrame::OnExitClicked, this, wxID_EXIT);
@@ -198,4 +208,34 @@ void MainFrame::OnAboutClicked(wxCommandEvent& event)
 {
 	DlgAbout dlg(this);
 	dlg.ShowModal();
+}
+
+void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
+{
+	for (int i=0; i<FILESPANEL_COUNT; ++i)
+	{
+		if (!m_pnlFile[i]->HasResult())
+		{
+			SetStatusText(wxEmptyString);
+			return;
+		}
+	}
+	// Actually, just MD5 is available
+	wxString sHash;
+	for (int i=0; i<FILESPANEL_COUNT; ++i)
+	{
+		if (i==0)
+		{
+			sHash=m_pnlFile[i]->GetResult(HT_MD5);
+		}
+		else
+		{
+			if (m_pnlFile[i]->GetResult(HT_MD5)!=sHash)
+			{
+				SetStatusText(_("Files checksums are differents"));
+				return;
+			}
+		}
+	}
+	SetStatusText(_("Files checksums are identicals"));
 }

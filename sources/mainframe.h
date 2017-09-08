@@ -24,6 +24,7 @@ class MainFrame: public wxFrame
 		void OnPreferencesClicked(wxCommandEvent &event);
 		void OnExitClicked(wxCommandEvent &event);
 		void OnAboutClicked(wxCommandEvent &event);
+		void OnCheckSumsChanged(wxCommandEvent &event);
 		// Controls vars
 		wxNotebook *m_nBook;
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];

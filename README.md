@@ -9,6 +9,7 @@ wxCheckSums is a simple application for calculating checksums on files or simple
  - Main window placement (known position or la registered position)
  - Multiple instances allowed or not
  - I18N or not (english)
+ - Can be "portable" if a file named "settings.xml" (empty or not) is created/placed in the application's folder
 #### Hash types : ####
  - MD5
 #### Mode : ####
@@ -31,3 +32,4 @@ wxCheckSums is a simple application for calculating checksums on files or simple
 #### Options : ####
  - Add an option to disable calculation for a type of hash
  - Add an option to specify if hashes must be displayed uppercase or lowercase
+ - Add an options to specify witch tab should be displayed at application startup

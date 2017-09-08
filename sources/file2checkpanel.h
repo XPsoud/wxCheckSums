@@ -13,6 +13,8 @@ class File2CheckPanel : public wxPanel
 	public:
 		File2CheckPanel(wxWindow* parent, const wxString& title);
 		virtual ~File2CheckPanel();
+		bool HasResult();
+		wxString GetResult(HashType type);
 	private:
 		// Misc functions
 		void CreateControls(const wxString& title);

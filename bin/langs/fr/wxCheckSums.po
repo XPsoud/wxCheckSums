@@ -5,9 +5,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-07 22:10+0100\n"
-"PO-Revision-Date: 2017-09-07 22:15+0100\n"
-"Last-Translator: Xaviou <x.psoud@gmail.com>\n"
+"POT-Creation-Date: 2017-09-08 09:50+0100\n"
+"PO-Revision-Date: 2017-09-08 09:51+0100\n"
+"Last-Translator: \n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -98,17 +98,25 @@ msgstr "Conserver l'interface en anglais (redémarrage nécessaire)"
 msgid "General"
 msgstr "Général"
 
-#: sources/file2checkpanel.cpp:41
+#: sources/file2checkpanel.cpp:59
 msgid "..."
 msgstr "..."
 
-#: sources/file2checkpanel.cpp:42
+#: sources/file2checkpanel.cpp:60
 msgid "Open the file selection dialog box"
 msgstr "Ouvrir la boîte de dialogue de sélection de fichier"
 
-#: sources/file2checkpanel.cpp:47
+#: sources/file2checkpanel.cpp:65
 msgid "MD5:"
 msgstr "MD5 :"
+
+#: sources/file2checkpanel.cpp:156
+msgid "Stop calculation ?"
+msgstr "Arrêter le calcul ?"
+
+#: sources/file2checkpanel.cpp:156
+msgid "Confirmation"
+msgstr "Confirmation"
 
 #: sources/filehashthread.cpp:54
 msgid "No valid file specified"
@@ -147,7 +155,7 @@ msgstr "Fichiers multiples"
 msgid "Simple text"
 msgstr "Texte simple"
 
-#: sources/mainframe.cpp:188
+#: sources/mainframe.cpp:190
 msgid ""
 "You changed the translation settings.\n"
 "You must restart the application to see this in effect."
@@ -155,9 +163,17 @@ msgstr ""
 "Vous avez modifié les réglages de traduction.\n"
 "Vous devez redémarrer l'application pour que cela soit effectif."
 
-#: sources/mainframe.cpp:188
+#: sources/mainframe.cpp:190
 msgid "Restart needed"
 msgstr "Redémarrage nécessaire"
+
+#: sources/mainframe.cpp:227
+msgid "Files checksums are differents"
+msgstr "Les sommes de contrôle des fichiers sont différentes"
+
+#: sources/mainframe.cpp:232
+msgid "Files checksums are identicals"
+msgstr "Les sommes de contrôle des fichiers sont identiques"
 
 #: sources/appversion.h:13
 msgid "wxCheckSums Application"
