@@ -804,6 +804,12 @@
 		<Unit filename="../sources/wxmd5.h">
 			<Option virtualFolder="CheckSums/" />
 		</Unit>
+		<Unit filename="../sources/wxsha1.cpp">
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
+		<Unit filename="../sources/wxsha1.h">
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
