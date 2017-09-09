@@ -26,32 +26,32 @@
 #define S44 21
 
 // Basic MD5 functions.
-inline wxUint32 wxMD5::F(wxUint32 x, wxUint32 y, wxUint32 z) { return (x&y) | (~x&z); }
+inline uint32_t wxMD5::F(uint32_t x, uint32_t y, uint32_t z) { return (x&y) | (~x&z); }
 
-inline wxUint32 wxMD5::G(wxUint32 x, wxUint32 y, wxUint32 z) { return (x&z) | (y&~z); }
+inline uint32_t wxMD5::G(uint32_t x, uint32_t y, uint32_t z) { return (x&z) | (y&~z); }
 
-inline wxUint32 wxMD5::H(wxUint32 x, wxUint32 y, wxUint32 z) { return x^y^z; }
+inline uint32_t wxMD5::H(uint32_t x, uint32_t y, uint32_t z) { return x^y^z; }
 
-inline wxUint32 wxMD5::I(wxUint32 x, wxUint32 y, wxUint32 z) { return y ^ (x | ~z); }
+inline uint32_t wxMD5::I(uint32_t x, uint32_t y, uint32_t z) { return y ^ (x | ~z); }
 
 // Rotate x left n bits.
-inline wxUint32 wxMD5::rotate_left(wxUint32 x, int n) { return (x << n) | (x >> (32-n)); }
+inline uint32_t wxMD5::rotate_left(uint32_t x, int n) { return (x << n) | (x >> (32-n)); }
 
 // FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.
 // Rotation is separate from addition to prevent recomputation.
-inline void wxMD5::FF(wxUint32 &a, wxUint32 b, wxUint32 c, wxUint32 d, wxUint32 x, wxUint32 s, wxUint32 ac) {
+inline void wxMD5::FF(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s, uint32_t ac) {
 	a = rotate_left(a+ F(b,c,d) + x + ac, s) + b;
 }
 
-inline void wxMD5::GG(wxUint32 &a, wxUint32 b, wxUint32 c, wxUint32 d, wxUint32 x, wxUint32 s, wxUint32 ac) {
+inline void wxMD5::GG(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s, uint32_t ac) {
 	a = rotate_left(a + G(b,c,d) + x + ac, s) + b;
 }
 
-inline void wxMD5::HH(wxUint32 &a, wxUint32 b, wxUint32 c, wxUint32 d, wxUint32 x, wxUint32 s, wxUint32 ac) {
+inline void wxMD5::HH(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s, uint32_t ac) {
 	a = rotate_left(a + H(b,c,d) + x + ac, s) + b;
 }
 
-inline void wxMD5::II(wxUint32 &a, wxUint32 b, wxUint32 c, wxUint32 d, wxUint32 x, wxUint32 s, wxUint32 ac) {
+inline void wxMD5::II(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s, uint32_t ac) {
 	a = rotate_left(a + I(b,c,d) + x + ac, s) + b;
 }
 
@@ -90,17 +90,17 @@ void wxMD5::Initialize()
 }
 
 // Decode input (8 bits) into output (32 bits). Assumes len is a multiple of 4.
-void wxMD5::Decode(wxUint32 output[], const wxUint8 input[], wxUint32 len)
+void wxMD5::Decode(uint32_t output[], const uint8_t input[], uint32_t len)
 {
 	for (unsigned int i = 0, j = 0; j < len; i++, j += 4)
-		output[i] = ((wxUint32)input[j]) | (((wxUint32)input[j+1]) << 8) |
-			(((wxUint32)input[j+2]) << 16) | (((wxUint32)input[j+3]) << 24);
+		output[i] = ((uint32_t)input[j]) | (((uint32_t)input[j+1]) << 8) |
+			(((uint32_t)input[j+2]) << 16) | (((uint32_t)input[j+3]) << 24);
 }
 
 // Encode input (32 bits) into output (8 bits). Assumes len is a multiple of 4.
-void wxMD5::Encode(wxUint8 output[], const wxUint32 input[], wxUint32 len)
+void wxMD5::Encode(uint8_t output[], const uint32_t input[], uint32_t len)
 {
-	for (wxUint32 i = 0, j = 0; j < len; i++, j += 4) {
+	for (uint32_t i = 0, j = 0; j < len; i++, j += 4) {
 		output[j] = input[i] & 0xff;
 		output[j+1] = (input[i] >> 8) & 0xff;
 		output[j+2] = (input[i] >> 16) & 0xff;
@@ -109,10 +109,10 @@ void wxMD5::Encode(wxUint8 output[], const wxUint32 input[], wxUint32 len)
 }
 
 // Apply MD5 algorithm on a block
-void wxMD5::Transform(const wxUint8 block[wxMD5_BlockSize])
+void wxMD5::Transform(const uint8_t block[64])
 {
-	wxUint32 a = m_uiState[0], b = m_uiState[1], c = m_uiState[2], d = m_uiState[3], x[16];
-	Decode (x, block, wxMD5_BlockSize);
+	uint32_t a = m_uiState[0], b = m_uiState[1], c = m_uiState[2], d = m_uiState[3], x[16];
+	Decode (x, block, 64);
 
 	/* Round 1 */
 	FF (a, b, c, d, x[ 0], S11, 0xd76aa478); /* 1 */
@@ -196,10 +196,10 @@ void wxMD5::Transform(const wxUint8 block[wxMD5_BlockSize])
 }
 
 // Continue an MD5 message-digest operation, processing another message block
-void wxMD5::Update(const unsigned char input[], wxUint32 length)
+void wxMD5::Update(const unsigned char input[], uint32_t length)
 {
 	// Compute number of bytes mod 64
-	wxUint32 index = m_uiCount[0] / 8 % wxMD5_BlockSize;
+	uint32_t index = m_uiCount[0] / 8 % 64;
 
 	// Update number of bits
 	if ((m_uiCount[0] += (length << 3)) < (length << 3))
@@ -207,9 +207,9 @@ void wxMD5::Update(const unsigned char input[], wxUint32 length)
 	m_uiCount[1] += (length >> 29);
 
 	// Number of bytes we need to fill in buffer
-	wxUint32 firstpart = 64 - index;
+	uint32_t firstpart = 64 - index;
 
-	wxUint32 i;
+	uint32_t i;
 
 	// Transform as many times as possible.
 	if (length >= firstpart)
@@ -219,7 +219,7 @@ void wxMD5::Update(const unsigned char input[], wxUint32 length)
 		Transform(m_uiBuffer);
 
 		// Transform chunks of blocksize (64 bytes)
-		for (i = firstpart; i + wxMD5_BlockSize <= length; i += wxMD5_BlockSize)
+		for (i = firstpart; i + 64 <= length; i += 64)
 			Transform(&input[i]);
 
 		index = 0;
@@ -246,8 +246,8 @@ wxMD5& wxMD5::Finalize()
 		Encode(bits, m_uiCount, 8);
 
 		// pad out to 56 mod 64.
-		wxUint32 index = m_uiCount[0] / 8 % 64;
-		wxUint32 padLen = (index < 56) ? (56 - index) : (120 - index);
+		uint32_t index = m_uiCount[0] / 8 % 64;
+		uint32_t padLen = (index < 56) ? (56 - index) : (120 - index);
 		Update(padding, padLen);
 
 		// Append length (before padding)
@@ -257,7 +257,7 @@ wxMD5& wxMD5::Finalize()
 		Encode(m_uiDigest, m_uiState, 16);
 
 		// Zeroize sensitive information.
-		memset(m_uiBuffer, 0, wxMD5_BlockSize);
+		memset(m_uiBuffer, 0, 64);
 		memset(m_uiCount, 0, 2);
 
 		m_bFinalized=true;
