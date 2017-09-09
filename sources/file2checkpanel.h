@@ -26,10 +26,11 @@ class File2CheckPanel : public wxPanel
 		void OnResultChanged(wxCommandEvent& event);
 		void OnBtnCancelClicked(wxCommandEvent &event);
 		void OnThreadEvent(wxThreadEvent &event);
+		void OnCmbHashTypeChanged(wxCommandEvent &event);
 		// Controls vars
 		wxBoxSizer *m_szrLine2;
 		wxTextCtrl *m_txtFileName, *m_txtResult;
-		wxStaticText *m_lblHashType;
+		wxChoice *m_cmbHashType;
 		wxGauge *m_pgbProgress;
 		wxButton *m_btnBrowse, *m_btnCancel;
 		// Misc vars

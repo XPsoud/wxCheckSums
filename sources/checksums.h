@@ -15,6 +15,8 @@ enum HashType
 	HT_COUNT
 };
 
+extern const wxChar* szHashNames[HT_COUNT];
+
 class CheckSums
 {
 	public:

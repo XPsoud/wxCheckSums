@@ -5,9 +5,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-08 09:50+0100\n"
-"PO-Revision-Date: 2017-09-08 09:51+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2017-09-10 00:28+0100\n"
+"PO-Revision-Date: 2017-09-10 00:29+0100\n"
+"Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,14 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: sources\n"
+
+#: sources/checksums.cpp:3
+msgid "MD5"
+msgstr "MD5"
+
+#: sources/checksums.cpp:3
+msgid "SHA1"
+msgstr "SHA1"
 
 #: sources/dlgabout.cpp:19
 msgid "Made with"
@@ -106,15 +114,11 @@ msgstr "..."
 msgid "Open the file selection dialog box"
 msgstr "Ouvrir la boîte de dialogue de sélection de fichier"
 
-#: sources/file2checkpanel.cpp:65
-msgid "MD5:"
-msgstr "MD5 :"
-
-#: sources/file2checkpanel.cpp:156
+#: sources/file2checkpanel.cpp:160
 msgid "Stop calculation ?"
 msgstr "Arrêter le calcul ?"
 
-#: sources/file2checkpanel.cpp:156
+#: sources/file2checkpanel.cpp:160
 msgid "Confirmation"
 msgstr "Confirmation"
 
@@ -134,28 +138,28 @@ msgstr "Une autre instance de cette application est déjà en train de tourner !
 msgid "Multiple instances forbidden"
 msgstr "Instances multiples interdites"
 
-#: sources/mainframe.cpp:89
+#: sources/mainframe.cpp:97
 msgid "Edit application settings"
 msgstr "Éditer les réglages de l'application"
 
-#: sources/mainframe.cpp:117
+#: sources/mainframe.cpp:125
 #, c-format
 msgid "File #%d"
 msgstr "Fichier N°%d"
 
-#: sources/mainframe.cpp:121
+#: sources/mainframe.cpp:129
 msgid "1-2 files"
 msgstr "1-2 fichiers"
 
-#: sources/mainframe.cpp:125
+#: sources/mainframe.cpp:133
 msgid "Multiple files"
 msgstr "Fichiers multiples"
 
-#: sources/mainframe.cpp:129
+#: sources/mainframe.cpp:137
 msgid "Simple text"
 msgstr "Texte simple"
 
-#: sources/mainframe.cpp:190
+#: sources/mainframe.cpp:198
 msgid ""
 "You changed the translation settings.\n"
 "You must restart the application to see this in effect."
@@ -163,17 +167,25 @@ msgstr ""
 "Vous avez modifié les réglages de traduction.\n"
 "Vous devez redémarrer l'application pour que cela soit effectif."
 
-#: sources/mainframe.cpp:190
+#: sources/mainframe.cpp:198
 msgid "Restart needed"
 msgstr "Redémarrage nécessaire"
 
-#: sources/mainframe.cpp:227
-msgid "Files checksums are differents"
-msgstr "Les sommes de contrôle des fichiers sont différentes"
+#: sources/mainframe.cpp:249
+msgid "All checksums are identicals"
+msgstr "Toutes les sommes de contrôle sont identiques"
 
-#: sources/mainframe.cpp:232
-msgid "Files checksums are identicals"
-msgstr "Les sommes de contrôle des fichiers sont identiques"
+#: sources/mainframe.cpp:255
+msgid "Some checksums are the same but not all"
+msgstr "Des sommes de contrôle des fichiers sont identiques mais pas toutes"
+
+#: sources/mainframe.cpp:261
+msgid "All checksums are differents"
+msgstr "Toutes les sommes de contrôle sont différentes"
+
+#: sources/mainframe.cpp:266
+msgid "An error occurred whith checksums"
+msgstr "Une erreur est survenue avec les sommes de contrôle"
 
 #: sources/appversion.h:13
 msgid "wxCheckSums Application"

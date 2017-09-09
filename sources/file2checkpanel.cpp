@@ -62,8 +62,11 @@ void File2CheckPanel::CreateControls(const wxString& title)
 			box->Add(line1, 0, wxALL|wxEXPAND, 5);
 
 			m_szrLine2=new wxBoxSizer(wxHORIZONTAL);
-				m_lblHashType=new wxStaticText(this, wxID_STATIC, _("MD5:"));
-				m_szrLine2->Add(m_lblHashType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+				m_cmbHashType=new wxChoice(this, -1);
+					for (int i=0; i<HT_COUNT; ++i)
+						m_cmbHashType->Append(wxGetTranslation(szHashNames[i]));
+					m_cmbHashType->SetSelection(0);
+				m_szrLine2->Add(m_cmbHashType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
 				m_txtResult=new wxTextCtrl(this, -1, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
 				m_txtResult->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE));
 				m_szrLine2->Add(m_txtResult, 1, wxLEFT, 5);
@@ -93,6 +96,7 @@ void File2CheckPanel::ConnectControls()
 	m_btnCancel->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCancelClicked, this);
 	Bind(wxEVT_THREAD_WORKING, &File2CheckPanel::OnThreadEvent, this);
 	Bind(wxEVT_THREAD_ENDED, &File2CheckPanel::OnThreadEvent, this);
+	m_cmbHashType->Bind(wxEVT_CHOICE, &File2CheckPanel::OnCmbHashTypeChanged, this);
 }
 
 void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
@@ -159,7 +163,7 @@ void File2CheckPanel::OnBtnCancelClicked(wxCommandEvent& event)
 	}
 	else
 	{
-		m_lblHashType->Show();
+		m_cmbHashType->Show();
 		m_txtResult->Show();
 		m_pgbProgress->Hide();
 		m_btnCancel->Hide();
@@ -175,7 +179,7 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 	{
 		if (m_pgbProgress->IsShown())
 		{
-			m_lblHashType->Show();
+			m_cmbHashType->Show();
 			m_txtResult->Show();
 			m_pgbProgress->Hide();
 			m_btnCancel->Hide();
@@ -196,7 +200,8 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 				m_sHash[i]=wxEmptyString;
 		}
 
-		m_txtResult->SetValue(m_sHash[0]);
+		int iSel=m_cmbHashType->GetSelection();
+		m_txtResult->SetValue(m_sHash[iSel]);
 
 		delete m_thread;
 		m_thread=NULL;
@@ -207,7 +212,7 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 	{
 		if (!m_pgbProgress->IsShown())
 		{
-			m_lblHashType->Hide();
+			m_cmbHashType->Hide();
 			m_txtResult->Hide();
 			m_pgbProgress->Show();
 			m_btnCancel->Show();
@@ -217,4 +222,10 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 
 		return;
 	}
+}
+
+void File2CheckPanel::OnCmbHashTypeChanged(wxCommandEvent& event)
+{
+	int iSel=m_cmbHashType->GetSelection();
+	m_txtResult->ChangeValue(m_sHash[iSel]);
 }

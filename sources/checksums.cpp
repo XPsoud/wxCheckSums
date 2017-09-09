@@ -1,5 +1,7 @@
 #include "checksums.h"
 
+const wxChar* szHashNames[HT_COUNT] = { _("MD5"), _("SHA1") };
+
 CheckSums::CheckSums(const wxString& text) :
 	m_md5(text), m_sha1(text)
 {

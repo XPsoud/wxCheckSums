@@ -221,6 +221,7 @@ void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
 		}
 	}
 	// Actually, just MD5 is available
+	bool bEqual=false, bDiff=false;
 	wxString sHash;
 	for (int i=0; i<FILESPANEL_COUNT; ++i)
 	{
@@ -230,12 +231,40 @@ void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
 		}
 		else
 		{
-			if (m_pnlFile[i]->GetResult(HT_MD5)!=sHash)
+			for (int j=1; j<FILESPANEL_COUNT; ++j)
 			{
-				SetStatusText(_("Files checksums are differents"));
-				return;
+				if (m_pnlFile[i]->GetResult(HT_MD5)!=sHash)
+				{
+					bDiff=true;
+				}
+				else
+				{
+					bEqual=true;
+				}
 			}
 		}
 	}
-	SetStatusText(_("Files checksums are identicals"));
+	if ((bDiff==false) && (bEqual==true))
+	{
+		SetStatusText(_("All checksums are identicals"));
+	}
+	else
+	{
+		if ((bDiff==true) && (bEqual==true))
+		{
+			SetStatusText(_("Some checksums are the same but not all"));
+		}
+		else
+		{
+			if ((bDiff==true) && (bEqual==false))
+			{
+				SetStatusText(_("All checksums are differents"));
+			}
+			else
+			{
+				// Should never arrives, but who knows...
+				SetStatusText(_("An error occurred whith checksums"));
+			}
+		}
+	}
 }
