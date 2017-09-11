@@ -48,6 +48,39 @@ wxString File2CheckPanel::GetResult(HashType type)
 	return m_sHash[type];
 }
 
+void File2CheckPanel::UpdateEnabledHashTypes()
+{
+	// Get actual selection if any
+	int iItem=m_cmbHashType->GetSelection();
+	HashType iType=HT_UNKNOWN;
+	if (iItem!=wxNOT_FOUND)
+		iType=GetSelectedHashType();
+	m_cmbHashType->Freeze();
+	m_cmbHashType->Clear();
+	SettingsManager& options=SettingsManager::Get();
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (options.GetHashMethodEnabled((HashType)i))
+		{
+			iItem=m_cmbHashType->Append(wxGetTranslation(szHashNames[i]), (void*)wxUIntPtr(i));
+			if (i==iType)
+				m_cmbHashType->SetSelection(iItem);
+		}
+	}
+	m_cmbHashType->Thaw();
+}
+
+HashType File2CheckPanel::GetSelectedHashType()
+{
+	int iSel=m_cmbHashType->GetSelection();
+	if (iSel!=wxNOT_FOUND)
+	{
+		size_t iType=(size_t)m_cmbHashType->GetClientData(iSel);
+		return (HashType)iType;
+	}
+	return HT_UNKNOWN;
+}
+
 void File2CheckPanel::CreateControls(const wxString& title)
 {
 	wxBoxSizer* mainsizer=new wxBoxSizer(wxVERTICAL);
@@ -64,8 +97,7 @@ void File2CheckPanel::CreateControls(const wxString& title)
 
 			m_szrLine2=new wxBoxSizer(wxHORIZONTAL);
 				m_cmbHashType=new wxChoice(this, -1);
-					for (int i=0; i<HT_COUNT; ++i)
-						m_cmbHashType->Append(wxGetTranslation(szHashNames[i]));
+					UpdateEnabledHashTypes();
 					m_cmbHashType->SetSelection(0);
 				m_szrLine2->Add(m_cmbHashType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
 				m_txtResult=new wxTextCtrl(this, -1, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
@@ -202,7 +234,7 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 		}
 
 		wxCommandEvent evt(wxEVT_CHOICE, m_cmbHashType->GetId());
-		AddPendingEvent(evt);
+		OnCmbHashTypeChanged(evt);
 
 		delete m_thread;
 		m_thread=NULL;
@@ -228,9 +260,11 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 void File2CheckPanel::OnCmbHashTypeChanged(wxCommandEvent& event)
 {
 	SettingsManager& options=SettingsManager::Get();
-	int iSel=m_cmbHashType->GetSelection();
+	HashType iType=GetSelectedHashType();
+	if (iType==HT_UNKNOWN)
+		return;
 	if (options.GetAlwaysUCase())
-		m_txtResult->ChangeValue(m_sHash[iSel].Upper());
+		m_txtResult->SetValue(m_sHash[iType].Upper());
 	else
-		m_txtResult->ChangeValue(m_sHash[iSel]);
+		m_txtResult->SetValue(m_sHash[iType]);
 }

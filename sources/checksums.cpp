@@ -1,5 +1,7 @@
 #include "checksums.h"
 
+#include "settingsmanager.h"
+
 const wxChar* szHashNames[HT_COUNT] = { _("MD5"), _("SHA1"),
 										_("SHA224"), _("SHA256"),
 										_("SHA384"), _("SHA512") };
@@ -11,8 +13,9 @@ CheckSums::CheckSums(const wxString& text) :
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"CheckSums\" object\n"));
 #endif // __WXDEBUG__
+	SettingsManager& options=SettingsManager::Get();
 	for (int i=0; i<HT_COUNT; ++i)
-		m_bHash[i]=true; // All methods activated by default
+		m_bHash[i]=options.GetHashMethodEnabled((HashType)i);
 }
 
 CheckSums::~CheckSums()

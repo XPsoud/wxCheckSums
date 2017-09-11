@@ -15,6 +15,8 @@ class File2CheckPanel : public wxPanel
 		virtual ~File2CheckPanel();
 		bool HasResult();
 		wxString GetResult(HashType type);
+		void UpdateEnabledHashTypes();
+		HashType GetSelectedHashType();
 	private:
 		// Misc functions
 		void CreateControls(const wxString& title);

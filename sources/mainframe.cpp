@@ -197,6 +197,8 @@ void MainFrame::OnPreferencesClicked(wxCommandEvent& event)
 	{
 		wxMessageBox(_("You changed the translation settings.\nYou must restart the application to see this in effect."), _("Restart needed"), wxICON_INFORMATION|wxCENTER|wxOK);
 	}
+	for (int i=0; i<FILESPANEL_COUNT; ++i)
+		m_pnlFile[i]->UpdateEnabledHashTypes();
 }
 
 void MainFrame::OnExitClicked(wxCommandEvent& event)
@@ -220,26 +222,28 @@ void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
 			return;
 		}
 	}
-	// Actually, just MD5 is available
 	bool bEqual=false, bDiff=false;
 	wxString sHash;
-	for (int i=0; i<FILESPANEL_COUNT; ++i)
+	for (int j=0; j<HT_COUNT; ++j)
 	{
-		if (i==0)
+		for (int i=0; i<FILESPANEL_COUNT; ++i)
 		{
-			sHash=m_pnlFile[i]->GetResult(HT_MD5);
-		}
-		else
-		{
-			for (int j=1; j<FILESPANEL_COUNT; ++j)
+			if (i==0)
 			{
-				if (m_pnlFile[i]->GetResult(HT_MD5)!=sHash)
+				sHash=m_pnlFile[i]->GetResult((HashType)j);
+			}
+			else
+			{
+				for (int j=1; j<FILESPANEL_COUNT; ++j)
 				{
-					bDiff=true;
-				}
-				else
-				{
-					bEqual=true;
+					if (m_pnlFile[i]->GetResult((HashType)j)!=sHash)
+					{
+						bDiff=true;
+					}
+					else
+					{
+						bEqual=true;
+					}
 				}
 			}
 		}
