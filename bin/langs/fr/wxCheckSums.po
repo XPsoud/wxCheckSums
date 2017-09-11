@@ -5,9 +5,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-10 00:28+0100\n"
-"PO-Revision-Date: 2017-09-10 00:29+0100\n"
-"Last-Translator: Xaviou <x.psoud@gmail.com>\n"
+"POT-Creation-Date: 2017-09-11 13:38+0100\n"
+"PO-Revision-Date: 2017-09-11 13:38+0100\n"
+"Last-Translator: \n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,22 @@ msgstr "MD5"
 #: sources/checksums.cpp:3
 msgid "SHA1"
 msgstr "SHA1"
+
+#: sources/checksums.cpp:4
+msgid "SHA224"
+msgstr "SHA224"
+
+#: sources/checksums.cpp:4
+msgid "SHA256"
+msgstr "SHA256"
+
+#: sources/checksums.cpp:5
+msgid "SHA384"
+msgstr "SHA384"
+
+#: sources/checksums.cpp:5
+msgid "SHA512"
+msgstr "SHA512"
 
 #: sources/dlgabout.cpp:19
 msgid "Made with"

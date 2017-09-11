@@ -12,18 +12,19 @@ wxCheckSums is a simple application for calculating checksums on files or simple
  - Can be "portable" if a file named "settings.xml" (empty or not) is created/placed in the application's folder
 #### Hash types : ####
  - MD5
+ - SHA1
+ - SHA224
+ - SHA256
+ - SHA384
+ - SHA512
+
 #### Mode : ####
  - 1 or 2 files : files can be dropped from the system's files manager
  - if 2 files have been checked, a message indicates if their checksums are identical or not
 
 
 ## To-Do ##
-#### Hash types : ####
- - SHA1
- - SHA224
- - SHA256
- - SHA384
- - SHA512
+
 #### Mode : ####
  - Multiple files : ability to calculate the checksums for more than 2 files at a time. Checksums should be able to be copied into the clipboard or saved into a text file
  - Simple text : just a multi-line text box with checksums calculation "on the fly". Options should be added for ends of lines mode.

@@ -810,6 +810,12 @@
 		<Unit filename="../sources/wxsha1.h">
 			<Option virtualFolder="CheckSums/" />
 		</Unit>
+		<Unit filename="../sources/wxsha2.cpp">
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
+		<Unit filename="../sources/wxsha2.h">
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
