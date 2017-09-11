@@ -82,6 +82,31 @@ void DlgOptions::CreateControls()
 			page->SetSizer(pageszr);
 		m_nBook->AddPage(page, _("General"));
 
+		// "Checksums" tab
+		page=new wxPanel(m_nBook, -1);
+			pageszr=new wxBoxSizer(wxVERTICAL);
+
+				m_chkAlwaysUCase=new wxCheckBox(page, -1, _("Always display results with uppercase chars"));
+				pageszr->Add(m_chkAlwaysUCase, 0, wxALL, 5);
+
+				label=new wxStaticText(page, wxID_STATIC, _("Checksums types to calculate:"));
+				pageszr->Add(label, 0, wxALL, 5);
+				flxszr=new wxFlexGridSizer(7, 5, 5);
+				for (int i=0; i<HT_COUNT; ++i)
+				{
+					flxszr->AddSpacer(10);
+					m_chkHashEnabled[i]=new wxCheckBox(page, -1, wxGetTranslation(szHashNames[i]));
+					flxszr->Add(m_chkHashEnabled[i]);
+					if ((i+1)%3==0)
+						flxszr->AddSpacer(10);
+				}
+				for (int i=0; i<7; ++i)
+					flxszr->AddGrowableCol(i, 1);
+			pageszr->Add(flxszr, 0, wxALL|wxEXPAND, 5);
+
+			page->SetSizer(pageszr);
+		m_nBook->AddPage(page, _("Checksums"));
+
 		szrMain->Add(m_nBook, 1, wxALL|wxEXPAND, 0);
 
 		szrMain->Add(new wxStaticLine(this, -1), 0, wxTOP|wxBOTTOM|wxEXPAND, 5);
@@ -149,6 +174,10 @@ void DlgOptions::FillControls()
 	m_chkSingleInstance->SetValue(m_options.GetMultipleInstancesAllowed()==false);
 	m_chkKeepLang->SetValue(m_options.GetProhibitI18N());
 
+	m_chkAlwaysUCase->SetValue(m_options.GetAlwaysUCase());
+	for (int i=0; i<HT_COUNT; ++i)
+		m_chkHashEnabled[i]->SetValue(m_options.GetHashMethodEnabled((HashType)i));
+
 	m_btnApply->Disable();
 }
 
@@ -184,6 +213,10 @@ bool DlgOptions::ApplySettings()
 
 	m_options.SetMultipleInstancesAllowed(m_chkSingleInstance->IsChecked()==false);
 	m_options.SetProhibitI18N(m_chkKeepLang->IsChecked());
+
+	m_options.SetAlwaysUCase(m_chkAlwaysUCase->IsChecked());
+	for (int i=0; i<HT_COUNT; ++i)
+		m_options.SetHashMethodEnabled((HashType)i, m_chkHashEnabled[i]->IsChecked());
 
 	m_btnApply->Disable();
 	return true;

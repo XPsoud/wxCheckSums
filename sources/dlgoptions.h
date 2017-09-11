@@ -5,6 +5,7 @@
 
 class SettingsManager;
 class wxNotebook;
+#include "checksums.h"
 
 class DlgOptions : public wxDialog
 {
@@ -26,6 +27,9 @@ class DlgOptions : public wxDialog
 	wxRadioButton *m_optStartType[2], *m_optDefPos[9];
 	wxStaticBox *m_stbPos;
 	wxCheckBox *m_chkSingleInstance, *m_chkKeepLang;
+	// "Checksums" tab control vars
+	wxCheckBox *m_chkAlwaysUCase;
+	wxCheckBox *m_chkHashEnabled[HT_COUNT];
 	// Main dialog box controls
 	wxNotebook *m_nBook;
 	wxButton *m_btnOk, *m_btnCancel, *m_btnApply;

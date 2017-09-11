@@ -27,11 +27,14 @@ class CheckSums
 	public:
 		CheckSums(const wxString& text=wxEmptyString);
 		virtual ~CheckSums();
+		bool EnableHashType(HashType type, bool enable=true);
+		bool DisableHashType(HashType type) { return EnableHashType(type, false); }
 		void Update(const unsigned char *buf, uint32_t length);
 		void Finalize();
 		wxString GetHexDigest(HashType type);
 	protected:
 	private:
+		bool m_bHash[HT_COUNT];
 		wxMD5 m_md5;
 		wxSHA1 m_sha1;
 		wxSHA224 m_sha224;

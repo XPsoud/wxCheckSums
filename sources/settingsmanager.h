@@ -5,6 +5,7 @@
 
 extern const wxChar* szStdXmlFileHeader;
 extern const int iStdXmlHeaderSize;
+#include "checksums.h"
 
 class SettingsManager
 {
@@ -33,6 +34,12 @@ class SettingsManager
 		// Prohibit translations and transaltions related stuff
 		bool GetProhibitI18N() { return m_bProhibI18N; }
 		void SetProhibitI18N(bool value);
+		// Always display results with uppercase chars
+		bool GetAlwaysUCase() { return m_bUCaseHashes; }
+		void SetAlwaysUCase(bool value);
+		// Checksums types enable/disable
+		bool GetHashMethodEnabled(HashType type);
+		bool SetHashMethodEnabled(HashType type, bool enable=true);
 	protected:
 	private:
 		SettingsManager();
@@ -52,6 +59,7 @@ class SettingsManager
 		wxPoint m_ptStartPos;
 		wxSize m_szStartSize;
 		bool m_bSingleInstance, m_bProhibI18N;
+		bool m_bUCaseHashes, m_bHashEnabled[HT_COUNT];
 };
 
 #endif // __SETTINGSMANAGER_H_INCLUDED__

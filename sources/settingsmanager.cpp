@@ -75,6 +75,9 @@ void SettingsManager::Initialize()
 	m_bCompDatas=false;
 	m_bCompSettings=false;
 	m_bProhibI18N=false;
+	m_bUCaseHashes=true;
+	for (int i=0; i<HT_COUNT; ++i)
+		m_bHashEnabled[i]=true;
 
 	m_bInitialized=true;
 }
@@ -114,7 +117,7 @@ bool SettingsManager::ReadSettings()
 	}
 
 	root=doc.GetRoot();
-	node=root->GetChildren();
+	node=root->GetChildren(), subNode;
 	wxString nodName, subName, sValue;
 	long lVal;
 	while(node)
@@ -150,6 +153,26 @@ bool SettingsManager::ReadSettings()
 		{
 			// Allowed ?
 			m_bProhibI18N=(node->GetAttribute(_T("Allowed"), _T("Yes"))!=_T("Yes"));
+		}
+		if (nodName==_T("Checksums"))
+		{
+			// Always upper case ?
+			m_bUCaseHashes=(node->GetAttribute(_T("UCase"), _T("Yes"))==_T("Yes"));
+			subNode=node->GetChildren();
+			// Enabled and disabled hash types
+			while(subNode!=NULL)
+			{
+				subName=subNode->GetName();
+				for (int i=0; i<HT_COUNT; ++i)
+				{
+					if (subName==szHashNames[i])
+					{
+						m_bHashEnabled[i]=(subNode->GetNodeContent()==_T("Enabled"));
+						break;
+					}
+				}
+				subNode=subNode->GetNext();
+			}
 		}
 
 		node = node->GetNext();
@@ -214,6 +237,24 @@ bool SettingsManager::SaveSettings()
 	node->SetNext(new wxXmlNode(NULL, wxXML_ELEMENT_NODE, _T("Translation")));
 	node = node->GetNext();
 	node->AddAttribute(_T("Allowed"), (m_bProhibI18N?_T("No"):_T("Yes")));
+	// Hashes
+	node->SetNext(new wxXmlNode(NULL, wxXML_ELEMENT_NODE, _T("Checksums")));
+	node = node->GetNext();
+	node->AddAttribute(_T("UCase"), (m_bUCaseHashes?_T("Yes"):_T("No")));
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (i)
+		{
+			subNode->SetNext(new wxXmlNode(NULL, wxXML_ELEMENT_NODE, szHashNames[i]));
+			subNode = subNode->GetNext();
+		}
+		else
+		{
+			subNode=new wxXmlNode(NULL, wxXML_ELEMENT_NODE, szHashNames[i]);
+			node->AddChild(subNode);
+		}
+		subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), (m_bHashEnabled[i]?_T("Enabled"):_T("Disabled"))));
+	}
 
 	wxXmlDocument doc;
 	doc.SetRoot(root);
@@ -341,4 +382,33 @@ void SettingsManager::SetProhibitI18N(bool value)
 		m_bProhibI18N=value;
 		m_bModified=true;
 	}
+}
+
+void SettingsManager::SetAlwaysUCase(bool value)
+{
+	if (value!=m_bUCaseHashes)
+	{
+		m_bUCaseHashes=value;
+		m_bModified=true;
+	}
+}
+
+bool SettingsManager::GetHashMethodEnabled(HashType type)
+{
+	if ((type <= HT_UNKNOWN) || (type >= HT_COUNT))
+		return false;
+
+	return m_bHashEnabled[type];
+}
+
+bool SettingsManager::SetHashMethodEnabled(HashType type, bool enable)
+{
+	if ((type <= HT_UNKNOWN) || (type >= HT_COUNT))
+		return false;
+	if (m_bHashEnabled[type]!=enable)
+	{
+		m_bHashEnabled[type]=enable;
+		m_bModified=true;
+	}
+	return true;
 }

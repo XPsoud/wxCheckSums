@@ -5,9 +5,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-11 13:38+0100\n"
-"PO-Revision-Date: 2017-09-11 13:38+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2017-09-11 20:33+0100\n"
+"PO-Revision-Date: 2017-09-11 20:34+0100\n"
+"Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -121,6 +121,18 @@ msgstr "Conserver l'interface en anglais (redémarrage nécessaire)"
 #: sources/dlgoptions.cpp:83
 msgid "General"
 msgstr "Général"
+
+#: sources/dlgoptions.cpp:89
+msgid "Always display results with uppercase chars"
+msgstr "Toujours afficher les résultats en majuscules"
+
+#: sources/dlgoptions.cpp:92
+msgid "Checksums types to calculate:"
+msgstr "Types de sommes de contrôle à calculer :"
+
+#: sources/dlgoptions.cpp:108
+msgid "Checksums"
+msgstr "Sommes de contrôle"
 
 #: sources/file2checkpanel.cpp:59
 msgid "..."
