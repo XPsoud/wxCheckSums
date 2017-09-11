@@ -2,6 +2,7 @@
 
 #include "filehashthread.h"
 #include "filedroptargets.h"
+#include "settingsmanager.h"
 
 wxDEFINE_EVENT(wxEVT_CHECKSUM_CHANGED, wxCommandEvent);
 
@@ -200,8 +201,8 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 				m_sHash[i]=wxEmptyString;
 		}
 
-		int iSel=m_cmbHashType->GetSelection();
-		m_txtResult->SetValue(m_sHash[iSel]);
+		wxCommandEvent evt(wxEVT_CHOICE, m_cmbHashType->GetId());
+		AddPendingEvent(evt);
 
 		delete m_thread;
 		m_thread=NULL;
@@ -226,6 +227,10 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 
 void File2CheckPanel::OnCmbHashTypeChanged(wxCommandEvent& event)
 {
+	SettingsManager& options=SettingsManager::Get();
 	int iSel=m_cmbHashType->GetSelection();
-	m_txtResult->ChangeValue(m_sHash[iSel]);
+	if (options.GetAlwaysUCase())
+		m_txtResult->ChangeValue(m_sHash[iSel].Upper());
+	else
+		m_txtResult->ChangeValue(m_sHash[iSel]);
 }
