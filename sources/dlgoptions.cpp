@@ -136,6 +136,8 @@ void DlgOptions::ConnectControls()
 	{
 		m_optDefPos[i]->Bind(wxEVT_RADIOBUTTON, &DlgOptions::OnSomethingHasChanged, this);
 	}
+	for (int i=0; i<HT_COUNT; ++i)
+		m_chkHashEnabled[i]->Bind(wxEVT_CHECKBOX, &DlgOptions::OnChkHashEnabledClicked, this);
 	Bind(wxEVT_CHECKBOX, &DlgOptions::OnSomethingHasChanged, this);
 	Bind(wxEVT_TEXT, &DlgOptions::OnSomethingHasChanged, this);
 	Bind(wxEVT_RADIOBUTTON, &DlgOptions::OnSomethingHasChanged, this);
@@ -229,6 +231,30 @@ void DlgOptions::OnStartupPosTypeChanged(wxCommandEvent& event)
 	for (int i=0; i<9; i++)
 	{
 		m_optDefPos[i]->Enable(bEnable);
+	}
+	OnSomethingHasChanged(event);
+}
+
+void DlgOptions::OnChkHashEnabledClicked(wxCommandEvent& event)
+{
+	// We must check that there is always at leat one value checked
+	bool bOk=false;
+	for (int i=0; i<HT_COUNT; ++i)
+		bOk |= m_chkHashEnabled[i]->IsChecked();
+	if (!bOk)
+	{
+		int iLast=HT_UNKNOWN;
+		for (int i=0; i<HT_COUNT; ++i)
+		{
+			if (m_chkHashEnabled[i]->GetId()==event.GetId())
+			{
+				iLast=i;
+				break;
+			}
+		}
+		wxMessageBox(_("At least one element must remain checked!\nAborting..."), _("Forbidden"), wxICON_EXCLAMATION|wxCENTER|wxOK);
+		m_chkHashEnabled[iLast]->SetValue(true);
+		return;
 	}
 	OnSomethingHasChanged(event);
 }

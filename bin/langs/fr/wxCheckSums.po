@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-11 20:33+0100\n"
-"PO-Revision-Date: 2017-09-11 20:34+0100\n"
+"POT-Creation-Date: 2017-09-11 21:20+0100\n"
+"PO-Revision-Date: 2017-09-11 21:21+0100\n"
 "Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
@@ -134,19 +134,31 @@ msgstr "Types de sommes de contrôle à calculer :"
 msgid "Checksums"
 msgstr "Sommes de contrôle"
 
-#: sources/file2checkpanel.cpp:59
+#: sources/dlgoptions.cpp:255
+msgid ""
+"At least one element must remain checked!\n"
+"Aborting..."
+msgstr ""
+"Au moins un élément doit rester coché !\n"
+"Abandon..."
+
+#: sources/dlgoptions.cpp:255
+msgid "Forbidden"
+msgstr "Interdit"
+
+#: sources/file2checkpanel.cpp:60
 msgid "..."
 msgstr "..."
 
-#: sources/file2checkpanel.cpp:60
+#: sources/file2checkpanel.cpp:61
 msgid "Open the file selection dialog box"
 msgstr "Ouvrir la boîte de dialogue de sélection de fichier"
 
-#: sources/file2checkpanel.cpp:160
+#: sources/file2checkpanel.cpp:161
 msgid "Stop calculation ?"
 msgstr "Arrêter le calcul ?"
 
-#: sources/file2checkpanel.cpp:160
+#: sources/file2checkpanel.cpp:161
 msgid "Confirmation"
 msgstr "Confirmation"
 

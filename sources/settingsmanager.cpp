@@ -117,7 +117,7 @@ bool SettingsManager::ReadSettings()
 	}
 
 	root=doc.GetRoot();
-	node=root->GetChildren(), subNode;
+	node=root->GetChildren();
 	wxString nodName, subName, sValue;
 	long lVal;
 	while(node)
@@ -173,6 +173,12 @@ bool SettingsManager::ReadSettings()
 				}
 				subNode=subNode->GetNext();
 			}
+			// Check that there is at least one type active
+			bool bOk=false;
+			for (int i=0; i<HT_COUNT; ++i)
+				bOk |= m_bHashEnabled[i];
+			if (!bOk)
+				m_bHashEnabled[0]=true;
 		}
 
 		node = node->GetNext();
@@ -209,7 +215,7 @@ bool SettingsManager::SaveSettings()
 	wxXmlNode *root = new wxXmlNode(NULL,wxXML_ELEMENT_NODE, _T("wxCheckSums_Settings-file"), wxEmptyString,
 							new wxXmlAttribute(_T("Version"), _T("1.0")));
 
-	wxXmlNode *node, *subNode;
+	wxXmlNode *node, *subNode=NULL;
 	// Last known position and size of the main window
 	node=new wxXmlNode(NULL, wxXML_ELEMENT_NODE, _T("StartupPos"));
 	root->AddChild(node);

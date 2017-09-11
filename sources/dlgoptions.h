@@ -20,6 +20,7 @@ class DlgOptions : public wxDialog
 	bool ApplySettings();
 	// Events handlers
 	void OnStartupPosTypeChanged(wxCommandEvent &event);
+	void OnChkHashEnabledClicked(wxCommandEvent &event);
 	void OnSomethingHasChanged(wxCommandEvent &event);
 	void OnBtnApplyClicked(wxCommandEvent &event);
 	void OnBtnOkClicked(wxCommandEvent &event);
