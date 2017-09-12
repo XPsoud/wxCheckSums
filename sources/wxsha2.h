@@ -41,6 +41,7 @@
 #define __WXSHA2_H_INCLUDED__
 
 #include <wx/wx.h>
+#include <stdint.h>
 
 class wxSHA2
 {
