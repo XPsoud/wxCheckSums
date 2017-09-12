@@ -28,7 +28,7 @@ CheckSums::~CheckSums()
 bool CheckSums::EnableHashType(HashType type, bool enable)
 {
 	if ((type <= HT_UNKNOWN) || (type >= HT_COUNT))
-		false;
+		return false;
 
 	m_bHash[type]=enable;
 
