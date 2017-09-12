@@ -234,16 +234,13 @@ void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
 			}
 			else
 			{
-				for (int j=1; j<FILESPANEL_COUNT; ++j)
+				if (m_pnlFile[i]->GetResult((HashType)j)!=sHash)
 				{
-					if (m_pnlFile[i]->GetResult((HashType)j)!=sHash)
-					{
-						bDiff=true;
-					}
-					else
-					{
-						bEqual=true;
-					}
+					bDiff=true;
+				}
+				else
+				{
+					bEqual=true;
 				}
 			}
 		}
