@@ -7,6 +7,7 @@
 		<Option virtualFolders="Graphx\;Misc\;Interface\;Datas\;Dialogs\;CheckSums\;" />
 		<Build>
 			<Target title="ReleaseGcc32">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
@@ -51,6 +52,7 @@
 				</Environment>
 			</Target>
 			<Target title="ReleaseVc10-32">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
@@ -93,6 +95,7 @@
 				</Environment>
 			</Target>
 			<Target title="ReleaseVc14-32">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
@@ -360,6 +363,7 @@
 				</Environment>
 			</Target>
 			<Target title="ReleaseGcc64">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
@@ -404,6 +408,7 @@
 				</Environment>
 			</Target>
 			<Target title="ReleaseVc10-64">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
@@ -446,6 +451,7 @@
 				</Environment>
 			</Target>
 			<Target title="ReleaseVc14-64">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
@@ -488,6 +494,7 @@
 				</Environment>
 			</Target>
 			<Target title="DebugGcc64">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Debug$(COMP)$(ARCHI)" />
@@ -531,6 +538,7 @@
 				</Environment>
 			</Target>
 			<Target title="ReleaseGcc64S">
+			    <Option platforms="Windows;" />
 				<Option output="../bin/wxCheckSums$(COMP)$(ARCHI)$(DBG_FLG)S" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)S" />
@@ -710,6 +718,26 @@
 					<Variable name="WX_VERSION" value="31" />
 				</Environment>
 			</Target>
+			<Target title="Release-Linux">
+				<Option platforms="Unix;" />
+				<Option output="../bin/wxCheckSums" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin" />
+				<Option object_output="./ReleaseLx/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="`wx-config --cflags`" />
+					<Add directory="../sources" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs all`" />
+					<Add library="libuuid.a" />
+				</Linker>
+			</Target>
 			<Environment>
 				<Variable name="WX_DIR" value="C:\wx$(WX_VERSION)" />
 			</Environment>
@@ -796,7 +824,21 @@
 		</Unit>
 		<Unit filename="../sources/resources.rc">
 			<Option compilerVar="WINDRES" />
-			<Option virtualFolder="Datas/" />
+			<Option virtualFolder="Misc/" />
+			<Option target="ReleaseGcc32" />
+			<Option target="ReleaseVc10-32" />
+			<Option target="DebugGcc32" />
+			<Option target="ReleaseGcc32S" />
+			<Option target="ReleaseVc10-32S" />
+			<Option target="ReleaseGcc64" />
+			<Option target="ReleaseVc10-64" />
+			<Option target="DebugGcc64" />
+			<Option target="ReleaseGcc64S" />
+			<Option target="ReleaseVc10-64S" />
+			<Option target="ReleaseVc14-32" />
+			<Option target="ReleaseVc14-32S" />
+			<Option target="ReleaseVc14-64" />
+			<Option target="ReleaseVc14-64S" />
 		</Unit>
 		<Unit filename="../sources/settingsmanager.cpp">
 			<Option virtualFolder="Datas/" />
