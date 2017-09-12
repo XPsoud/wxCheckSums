@@ -1,8 +1,11 @@
 #include "file2checkpanel.h"
 
+#include "buttonsicons.h"
 #include "filehashthread.h"
 #include "filedroptargets.h"
 #include "settingsmanager.h"
+
+#include <wx/clipbrd.h>
 
 wxDEFINE_EVENT(wxEVT_CHECKSUM_CHANGED, wxCommandEvent);
 
@@ -103,6 +106,12 @@ void File2CheckPanel::CreateControls(const wxString& title)
 				m_txtResult=new wxTextCtrl(this, -1, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
 				m_txtResult->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE));
 				m_szrLine2->Add(m_txtResult, 1, wxLEFT, 5);
+				m_btnCopy=new wxBitmapButton(this, wxID_COPY, wxGet_copy_png_Bitmap());
+					m_btnCopy->SetToolTip(_("Copy displayed value to clipboard"));
+				m_szrLine2->Add(m_btnCopy, 0, wxLEFT, 5);
+				m_btnCopyAll=new wxBitmapButton(this, wxID_PASTE, wxGet_copyall_png_Bitmap());
+					m_btnCopyAll->SetToolTip(_("Copy all values to clipboard"));
+				m_szrLine2->Add(m_btnCopyAll, 0, wxLEFT, 5);
 				m_pgbProgress=new wxGauge(this, -1, 1000);
 				m_szrLine2->Add(m_pgbProgress, 1, wxALL|wxEXPAND, 0);
 				m_btnCancel=new wxButton(this, wxID_CANCEL, wxGetStockLabel(wxID_CANCEL, wxSTOCK_FOR_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
@@ -130,6 +139,10 @@ void File2CheckPanel::ConnectControls()
 	Bind(wxEVT_THREAD_WORKING, &File2CheckPanel::OnThreadEvent, this);
 	Bind(wxEVT_THREAD_ENDED, &File2CheckPanel::OnThreadEvent, this);
 	m_cmbHashType->Bind(wxEVT_CHOICE, &File2CheckPanel::OnCmbHashTypeChanged, this);
+	m_btnCopy->Bind(wxEVT_UPDATE_UI, &File2CheckPanel::OnUpdateUI_BtnCopy, this);
+	m_btnCopy->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCopyclicked, this);
+	m_btnCopyAll->Bind(wxEVT_UPDATE_UI, &File2CheckPanel::OnUpdateUI_BtnCopyAll, this);
+	m_btnCopyAll->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCopyAllclicked, this);
 }
 
 void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
@@ -198,6 +211,8 @@ void File2CheckPanel::OnBtnCancelClicked(wxCommandEvent& event)
 	{
 		m_cmbHashType->Show();
 		m_txtResult->Show();
+		m_btnCopy->Show();
+		m_btnCopyAll->Show();
 		m_pgbProgress->Hide();
 		m_btnCancel->Hide();
 		m_txtFileName->Enable();
@@ -214,6 +229,8 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 		{
 			m_cmbHashType->Show();
 			m_txtResult->Show();
+			m_btnCopy->Show();
+			m_btnCopyAll->Show();
 			m_pgbProgress->Hide();
 			m_btnCancel->Hide();
 			m_szrLine2->Layout();
@@ -247,6 +264,8 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 		{
 			m_cmbHashType->Hide();
 			m_txtResult->Hide();
+			m_btnCopy->Hide();
+			m_btnCopyAll->Hide();
 			m_pgbProgress->Show();
 			m_btnCancel->Show();
 			m_szrLine2->Layout();
@@ -267,4 +286,46 @@ void File2CheckPanel::OnCmbHashTypeChanged(wxCommandEvent& event)
 		m_txtResult->SetValue(m_sHash[iType].Upper());
 	else
 		m_txtResult->SetValue(m_sHash[iType]);
+}
+
+void File2CheckPanel::OnUpdateUI_BtnCopy(wxUpdateUIEvent& event)
+{
+	event.Enable(m_txtResult->IsEmpty()==false);
+}
+
+void File2CheckPanel::OnBtnCopyclicked(wxCommandEvent& event)
+{
+	if (!wxTheClipboard->Open())
+	{
+		wxMessageBox(_("Unable to open the clipboard!"), _("Error"), wxICON_EXCLAMATION|wxOK|wxCENTER);
+		return;
+	}
+	wxTheClipboard->SetData(new wxTextDataObject(m_txtResult->GetValue()));
+	wxTheClipboard->Close();
+}
+
+void File2CheckPanel::OnUpdateUI_BtnCopyAll(wxUpdateUIEvent& event)
+{
+	event.Enable(HasResult());
+}
+
+void File2CheckPanel::OnBtnCopyAllclicked(wxCommandEvent& event)
+{
+	if (!wxTheClipboard->Open())
+	{
+		wxMessageBox(_("Unable to open the clipboard!"), _("Error"), wxICON_EXCLAMATION|wxOK|wxCENTER);
+		return;
+	}
+	wxString sData=wxEmptyString;
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (!m_sHash[i].IsEmpty())
+		{
+			if (!sData.IsEmpty())
+				sData << _T("\n");
+			sData << m_sHash[i];
+		}
+	}
+	wxTheClipboard->SetData(new wxTextDataObject(sData));
+	wxTheClipboard->Close();
 }

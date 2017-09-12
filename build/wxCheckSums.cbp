@@ -740,6 +740,12 @@
 		<Unit filename="../sources/appversion.h">
 			<Option virtualFolder="Misc/" />
 		</Unit>
+		<Unit filename="../sources/buttonsicons.cpp">
+			<Option virtualFolder="Graphx/" />
+		</Unit>
+		<Unit filename="../sources/buttonsicons.h">
+			<Option virtualFolder="Graphx/" />
+		</Unit>
 		<Unit filename="../sources/checksums.cpp">
 			<Option virtualFolder="CheckSums/" />
 		</Unit>

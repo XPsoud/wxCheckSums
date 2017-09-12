@@ -29,12 +29,17 @@ class File2CheckPanel : public wxPanel
 		void OnBtnCancelClicked(wxCommandEvent &event);
 		void OnThreadEvent(wxThreadEvent &event);
 		void OnCmbHashTypeChanged(wxCommandEvent &event);
+		void OnUpdateUI_BtnCopy(wxUpdateUIEvent &event);
+		void OnBtnCopyclicked(wxCommandEvent &event);
+		void OnUpdateUI_BtnCopyAll(wxUpdateUIEvent &event);
+		void OnBtnCopyAllclicked(wxCommandEvent &event);
 		// Controls vars
 		wxBoxSizer *m_szrLine2;
 		wxTextCtrl *m_txtFileName, *m_txtResult;
 		wxChoice *m_cmbHashType;
 		wxGauge *m_pgbProgress;
 		wxButton *m_btnBrowse, *m_btnCancel;
+		wxBitmapButton *m_btnCopy, *m_btnCopyAll;
 		// Misc vars
 		FileHashThread *m_thread;
 		wxString m_sHash[HT_COUNT];
