@@ -23,6 +23,9 @@ INCLUDES=
 CPP_SRC_FILES = $(wildcard $(srcdir)/*.cpp)
 OBJ_SRC_FILES = $(CPP_SRC_FILES:$(srcdir)/%.cpp=build/sources/%.o)
 DEP_SRC_FILES = $(OBJ_SRC_FILES:build/sources/%.o=build/sources/%.d)
+C_SRC_FILES = $(wildcard $(srcdir)/*.c)
+COBJ_SRC_FILES = $(C_SRC_FILES:$(srcdir)/%.c=build/sources/%.o)
+CDEP_SRC_FILES = $(COBJ_SRC_FILES:build/sources/%.o=build/sources/%.d)
 
 __app__mac_setfilecmd = \
 	$(SETFILE) -t APPL $(AppExe)
@@ -41,9 +44,9 @@ minclean:
 prebuild:
 	@mkdir -p build/sources
 
-$(AppExe): $(OBJ_SRC_FILES)
+$(AppExe): $(OBJ_SRC_FILES) $(COBJ_SRC_FILES)
 	@echo Linking executable $@
-	@g++ -o $@ $(OBJ_SRC_FILES) $(LIBS)
+	@g++ -o $@ $(OBJ_SRC_FILES) $(COBJ_SRC_FILES) $(LIBS)
 	@echo Preparing executable for bundle
 	@$(__app__mac_setfilecmd)
 
@@ -73,6 +76,9 @@ build/sources/%.o: sources/%.cpp sources/%.h
 	@echo Compiling $<
 	@g++ -c -MMD -o $@ $(CXXFLAGS) $(INCLUDES) $<
 
+build/sources/%.o: sources/%.c sources/%.h
+	@echo Compiling $<
+	@gcc -c -MMD -o $@ $(CXXFLAGS) $(INCLUDES) $<
 .PHONY: all clean App_Bundle minclean
 
 endif
