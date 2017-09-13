@@ -395,6 +395,13 @@
 		<Unit filename="../sources/mainframe.h">
 			<Option virtualFolder="Interface/" />
 		</Unit>
+		<Unit filename="../sources/md5.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
+		<Unit filename="../sources/md5.h">
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
 		<Unit filename="../sources/resources.rc">
 			<Option compilerVar="WINDRES" />
 			<Option virtualFolder="Misc/" />
