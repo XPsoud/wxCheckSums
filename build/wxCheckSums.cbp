@@ -411,6 +411,13 @@
 		<Unit filename="../sources/settingsmanager.h">
 			<Option virtualFolder="Datas/" />
 		</Unit>
+		<Unit filename="../sources/sha1.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
+		<Unit filename="../sources/sha1.h">
+			<Option virtualFolder="CheckSums/" />
+		</Unit>
 		<Unit filename="../sources/sha256.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="CheckSums/" />
