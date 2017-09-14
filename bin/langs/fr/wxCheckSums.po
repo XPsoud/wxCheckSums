@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-11 21:20+0100\n"
-"PO-Revision-Date: 2017-09-11 21:21+0100\n"
+"POT-Creation-Date: 2017-09-14 21:22+0100\n"
+"PO-Revision-Date: 2017-09-14 21:24+0100\n"
 "Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
@@ -18,27 +18,27 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: sources\n"
 
-#: sources/checksums.cpp:3
+#: sources/checksums.cpp:5
 msgid "MD5"
 msgstr "MD5"
 
-#: sources/checksums.cpp:3
+#: sources/checksums.cpp:5
 msgid "SHA1"
 msgstr "SHA1"
 
-#: sources/checksums.cpp:4
+#: sources/checksums.cpp:6
 msgid "SHA224"
 msgstr "SHA224"
 
-#: sources/checksums.cpp:4
+#: sources/checksums.cpp:6
 msgid "SHA256"
 msgstr "SHA256"
 
-#: sources/checksums.cpp:5
+#: sources/checksums.cpp:7
 msgid "SHA384"
 msgstr "SHA384"
 
-#: sources/checksums.cpp:5
+#: sources/checksums.cpp:7
 msgid "SHA512"
 msgstr "SHA512"
 
@@ -134,7 +134,7 @@ msgstr "Types de sommes de contrôle à calculer :"
 msgid "Checksums"
 msgstr "Sommes de contrôle"
 
-#: sources/dlgoptions.cpp:255
+#: sources/dlgoptions.cpp:255 sources/filterpanel.cpp:79
 msgid ""
 "At least one element must remain checked!\n"
 "Aborting..."
@@ -142,33 +142,53 @@ msgstr ""
 "Au moins un élément doit rester coché !\n"
 "Abandon..."
 
-#: sources/dlgoptions.cpp:255
+#: sources/dlgoptions.cpp:255 sources/filterpanel.cpp:79
 msgid "Forbidden"
 msgstr "Interdit"
 
-#: sources/file2checkpanel.cpp:60
+#: sources/file2checkpanel.cpp:121
 msgid "..."
 msgstr "..."
 
-#: sources/file2checkpanel.cpp:61
+#: sources/file2checkpanel.cpp:122
 msgid "Open the file selection dialog box"
 msgstr "Ouvrir la boîte de dialogue de sélection de fichier"
 
-#: sources/file2checkpanel.cpp:161
+#: sources/file2checkpanel.cpp:135
+msgid "Copy displayed value to clipboard"
+msgstr "Copier la valeur affichée vers le presse papier"
+
+#: sources/file2checkpanel.cpp:138
+msgid "Copy all values to clipboard"
+msgstr "Copier toutes les valeurs vers le presse papier"
+
+#: sources/file2checkpanel.cpp:242
 msgid "Stop calculation ?"
 msgstr "Arrêter le calcul ?"
 
-#: sources/file2checkpanel.cpp:161
+#: sources/file2checkpanel.cpp:242
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: sources/filehashthread.cpp:54
+#: sources/file2checkpanel.cpp:342 sources/file2checkpanel.cpp:358
+msgid "Unable to open the clipboard!"
+msgstr "Impossible d'ouvrir le presse papier !"
+
+#: sources/file2checkpanel.cpp:342 sources/file2checkpanel.cpp:358
+msgid "Error"
+msgstr "Erreur"
+
+#: sources/filehashthread.cpp:60
 msgid "No valid file specified"
 msgstr "Pas de fichier valide spécifié"
 
-#: sources/filehashthread.cpp:62
+#: sources/filehashthread.cpp:68
 msgid "Unable to open the file"
 msgstr "Impossible d'ouvrir le fichier"
+
+#: sources/filterpanel.cpp:38
+msgid "Hashing methods filter:"
+msgstr "Filtre des méthodes de hachage :"
 
 #: sources/main.cpp:57
 msgid "An other instance of this application is already running !"
@@ -178,28 +198,28 @@ msgstr "Une autre instance de cette application est déjà en train de tourner !
 msgid "Multiple instances forbidden"
 msgstr "Instances multiples interdites"
 
-#: sources/mainframe.cpp:97
+#: sources/mainframe.cpp:98
 msgid "Edit application settings"
 msgstr "Éditer les réglages de l'application"
 
-#: sources/mainframe.cpp:125
+#: sources/mainframe.cpp:128
 #, c-format
 msgid "File #%d"
 msgstr "Fichier N°%d"
 
-#: sources/mainframe.cpp:129
+#: sources/mainframe.cpp:132
 msgid "1-2 files"
 msgstr "1-2 fichiers"
 
-#: sources/mainframe.cpp:133
+#: sources/mainframe.cpp:136
 msgid "Multiple files"
 msgstr "Fichiers multiples"
 
-#: sources/mainframe.cpp:137
+#: sources/mainframe.cpp:140
 msgid "Simple text"
 msgstr "Texte simple"
 
-#: sources/mainframe.cpp:198
+#: sources/mainframe.cpp:210
 msgid ""
 "You changed the translation settings.\n"
 "You must restart the application to see this in effect."
@@ -207,23 +227,35 @@ msgstr ""
 "Vous avez modifié les réglages de traduction.\n"
 "Vous devez redémarrer l'application pour que cela soit effectif."
 
-#: sources/mainframe.cpp:198
+#: sources/mainframe.cpp:210
 msgid "Restart needed"
 msgstr "Redémarrage nécessaire"
 
-#: sources/mainframe.cpp:249
+#: sources/mainframe.cpp:220
+msgid ""
+"You changed the enabled/disabled state of hashing methods.\n"
+"Do you want to update the temporary values ?"
+msgstr ""
+"Vous avez modifié l'état activé/désactivé des méthodes de hachage.\n"
+"Voulez-vous mettre à jour les valeurs temporaires ?"
+
+#: sources/mainframe.cpp:220
+msgid "Filter changed"
+msgstr "Filtre modifié"
+
+#: sources/mainframe.cpp:276
 msgid "All checksums are identicals"
 msgstr "Toutes les sommes de contrôle sont identiques"
 
-#: sources/mainframe.cpp:255
+#: sources/mainframe.cpp:282
 msgid "Some checksums are the same but not all"
 msgstr "Des sommes de contrôle des fichiers sont identiques mais pas toutes"
 
-#: sources/mainframe.cpp:261
+#: sources/mainframe.cpp:288
 msgid "All checksums are differents"
 msgstr "Toutes les sommes de contrôle sont différentes"
 
-#: sources/mainframe.cpp:266
+#: sources/mainframe.cpp:293
 msgid "An error occurred whith checksums"
 msgstr "Une erreur est survenue avec les sommes de contrôle"
 

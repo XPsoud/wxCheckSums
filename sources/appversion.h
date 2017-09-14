@@ -6,7 +6,7 @@
 #define VERSION_REV     1
 // Add "201" before the number below to obtain
 // the complete date in format : YYYYMMJJ
-#define VERSION_BUILD   70906
+#define VERSION_BUILD   70914
 
 #define PRODUCTNAME "wxCheckSums"
 #define DESCRIPTION "wxCheckSums Application"

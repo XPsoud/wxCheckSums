@@ -28,6 +28,7 @@ wxCheckSums is a simple application for calculating checksums on files or simple
    - selecting a file using a dialog box (brows button
    - copy the displayed checksum to the clipboard
    - copy all calculated checksums to the clipboard
+ - A "*filter panel*" is present on this tab to temporary override the enabled methods for the current session only (values not saved with the settings)
 
 ##### Multiple files #####
 Not yet implemented
@@ -45,4 +46,3 @@ Not yet implemented
  - Files to check can be given using the command line. If 1 or 2 files, the first tab should be activated. If more than 2 files, the second tab will be the one visible.
 #### Options : ####
  - Add an option to specify witch tab should be displayed at application startup
- - Add options on the "1-2 files" tab to override the enabled methods for the current session only (values not saved with the settings)
