@@ -70,6 +70,8 @@ void File2CheckPanel::UpdateEnabledHashTypes()
 				m_cmbHashType->SetSelection(iItem);
 		}
 	}
+	if (m_cmbHashType->GetSelection()==wxNOT_FOUND)
+		m_cmbHashType->SetSelection(0);
 	m_cmbHashType->Thaw();
 }
 
