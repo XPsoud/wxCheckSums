@@ -27,7 +27,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-# if __BYTE_ORDER == __BIG_ENDIAN
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 # define SWAP(n)                                                        \
     (((n) << 24) | (((n) & 0xff00) << 8) | (((n) >> 8) & 0xff00) | ((n) >> 24))
 #else
