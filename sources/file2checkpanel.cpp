@@ -217,7 +217,7 @@ void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
 	int iMask=0, iCount=m_cmbHashType->GetCount();
 	for (int i=0; i<iCount; ++i)
 	{
-		int iType=(int)m_cmbHashType->GetClientData(i);
+		size_t iType=(size_t)m_cmbHashType->GetClientData(i);
 		iMask |= 1<<iType;
 	}
 	m_thread->SetHashingFilter(iMask);
