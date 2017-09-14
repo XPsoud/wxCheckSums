@@ -26,6 +26,7 @@ class MainFrame: public wxFrame
 		void OnExitClicked(wxCommandEvent &event);
 		void OnAboutClicked(wxCommandEvent &event);
 		void OnCheckSumsChanged(wxCommandEvent &event);
+		void OnFilePanelEvent(wxCommandEvent &event);
 		void OnFilterChanged(wxCommandEvent &event);
 		// Controls vars
 		wxNotebook *m_nBook;

@@ -153,6 +153,8 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
 
 	Bind(wxEVT_CHECKSUM_CHANGED, &MainFrame::OnCheckSumsChanged, this);
+	Bind(wxEVT_FILEPANEL_STARTED, &MainFrame::OnFilePanelEvent, this);
+	Bind(wxEVT_FILEPANEL_STOPPED, &MainFrame::OnFilePanelEvent, this);
 	Bind(wxEVT_FILTER_CHANGED, &MainFrame::OnFilterChanged, this);
 
 	// Menus events handlers
@@ -272,6 +274,22 @@ void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
 			}
 		}
 	}
+}
+
+void MainFrame::OnFilePanelEvent(wxCommandEvent& event)
+{
+	// Depending on the running state of the files panels
+	// we can enable or disable the filter panel
+	for (int i=0; i<FILESPANEL_COUNT; ++i)
+	{
+		if (m_pnlFile[i]->IsRunning())
+		{
+			m_pnlFilter->Disable();
+			return;
+		}
+	}
+	// If we get here, no file panel is running
+	m_pnlFilter->Enable();
 }
 
 void MainFrame::OnFilterChanged(wxCommandEvent& event)

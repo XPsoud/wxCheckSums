@@ -4,6 +4,8 @@
 #include <wx/wx.h>
 
 wxDECLARE_EVENT(wxEVT_CHECKSUM_CHANGED, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_FILEPANEL_STARTED, wxCommandEvent);
+wxDECLARE_EVENT(wxEVT_FILEPANEL_STOPPED, wxCommandEvent);
 
 #include "checksums.h"
 class FileHashThread;
@@ -14,6 +16,7 @@ class File2CheckPanel : public wxPanel
 		File2CheckPanel(wxWindow* parent, const wxString& title);
 		virtual ~File2CheckPanel();
 		bool HasResult();
+		bool IsRunning();
 		wxString GetResult(HashType type);
 		void UpdateEnabledHashTypes();
 		HashType GetSelectedHashType();

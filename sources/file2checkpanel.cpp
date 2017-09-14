@@ -8,6 +8,8 @@
 #include <wx/clipbrd.h>
 
 wxDEFINE_EVENT(wxEVT_CHECKSUM_CHANGED, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_FILEPANEL_STARTED, wxCommandEvent);
+wxDEFINE_EVENT(wxEVT_FILEPANEL_STOPPED, wxCommandEvent);
 
 File2CheckPanel::File2CheckPanel(wxWindow* parent, const wxString& title)
 	: wxPanel(parent, -1)
@@ -41,6 +43,14 @@ bool File2CheckPanel::HasResult()
 			return true;
 	}
 	return false;
+}
+
+bool File2CheckPanel::IsRunning()
+{
+	if (m_thread==NULL)
+		return false;
+
+	return m_thread->IsRunning();
 }
 
 wxString File2CheckPanel::GetResult(HashType type)
@@ -193,6 +203,9 @@ void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
 	m_txtFileName->Disable();
 	m_btnBrowse->Disable();
 	m_thread->Run();
+
+	wxCommandEvent evt(wxEVT_FILEPANEL_STARTED, GetId());
+	AddPendingEvent(evt);
 }
 
 void File2CheckPanel::OnResultChanged(wxCommandEvent& event)
@@ -208,6 +221,8 @@ void File2CheckPanel::OnBtnCancelClicked(wxCommandEvent& event)
 		if (wxMessageBox(_("Stop calculation ?"), _("Confirmation"), wxICON_QUESTION|wxYES_NO|wxCENTER)!=wxYES)
 			return;
 		m_thread->Delete();
+		wxCommandEvent evt(wxEVT_FILEPANEL_STOPPED, GetId());
+		AddPendingEvent(evt);
 	}
 	else
 	{
@@ -257,6 +272,10 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 
 		delete m_thread;
 		m_thread=NULL;
+
+		evt.SetEventType(wxEVT_FILEPANEL_STOPPED);
+		evt.SetId(GetId());
+		AddPendingEvent(evt);
 
 		return;
 	}
