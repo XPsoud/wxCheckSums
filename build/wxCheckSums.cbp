@@ -383,6 +383,12 @@
 		<Unit filename="../sources/filehashthread.h">
 			<Option virtualFolder="Misc/" />
 		</Unit>
+		<Unit filename="../sources/filterpanel.cpp">
+			<Option virtualFolder="Interface/" />
+		</Unit>
+		<Unit filename="../sources/filterpanel.h">
+			<Option virtualFolder="Interface/" />
+		</Unit>
 		<Unit filename="../sources/main.cpp">
 			<Option virtualFolder="Misc/" />
 		</Unit>

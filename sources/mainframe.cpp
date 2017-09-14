@@ -4,6 +4,7 @@
 #include "dlgabout.h"
 #include "appversion.h"
 #include "dlgoptions.h"
+#include "filterpanel.h"
 #include "settingsmanager.h"
 #include "file2checkpanel.h"
 
@@ -120,6 +121,8 @@ void MainFrame::CreateControls()
 	// "1 - 2 files" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
+		m_pnlFilter=new FilterPanel(page);
+		szr->Add(m_pnlFilter, 0, wxALL|wxEXPAND, 0);
 		for (int i=0; i<FILESPANEL_COUNT; ++i)
 		{
 			m_pnlFile[i]=new File2CheckPanel(page, wxString::Format(_("File #%d"), i+1));
@@ -150,6 +153,7 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
 
 	Bind(wxEVT_CHECKSUM_CHANGED, &MainFrame::OnCheckSumsChanged, this);
+	Bind(wxEVT_FILTER_CHANGED, &MainFrame::OnFilterChanged, this);
 
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
@@ -268,4 +272,9 @@ void MainFrame::OnCheckSumsChanged(wxCommandEvent& event)
 			}
 		}
 	}
+}
+
+void MainFrame::OnFilterChanged(wxCommandEvent& event)
+{
+	//
 }
