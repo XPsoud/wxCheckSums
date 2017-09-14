@@ -42,6 +42,12 @@ bool FileHashThread::SetFile2Hash(const wxString& filename)
 	return true;
 }
 
+void FileHashThread::SetHashingFilter(int mask)
+{
+	for (int i=0; i<HT_COUNT; ++i)
+		m_csHash.EnableHashType((HashType)i, (mask & (1<<i)));
+}
+
 wxString FileHashThread::GetHexDigest(HashType type)
 {
 	return m_csHash.GetHexDigest(type);

@@ -25,6 +25,12 @@ FilterPanel::~FilterPanel()
 #endif // __WXDEBUG__
 }
 
+void FilterPanel::UpdateFromSettings()
+{
+	for (int i=0; i<HT_COUNT; ++i)
+		m_chkHashType[i]->SetValue(SettingsManager::Get().GetHashMethodEnabled((HashType)i));
+}
+
 void FilterPanel::CreateControls()
 {
 	wxBoxSizer* mainsizer=new wxBoxSizer(wxVERTICAL);

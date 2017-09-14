@@ -18,7 +18,7 @@ class File2CheckPanel : public wxPanel
 		bool HasResult();
 		bool IsRunning();
 		wxString GetResult(HashType type);
-		void UpdateEnabledHashTypes();
+		void UpdateEnabledHashTypes(int mask=0);
 		HashType GetSelectedHashType();
 	private:
 		// Misc functions

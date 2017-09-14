@@ -17,7 +17,8 @@ enum HashType
 	HT_SHA384,
 	HT_SHA512,
 
-	HT_COUNT
+	HT_COUNT,
+	HT_ALL = (1<<HT_COUNT)-1
 };
 
 extern const wxChar* szHashNames[HT_COUNT];

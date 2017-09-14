@@ -61,8 +61,21 @@ wxString File2CheckPanel::GetResult(HashType type)
 	return m_sHash[type];
 }
 
-void File2CheckPanel::UpdateEnabledHashTypes()
+void File2CheckPanel::UpdateEnabledHashTypes(int mask)
 {
+	int iMask=mask;
+	// If the mask correspond to an invalid value (<=0 or >HT_ALL)
+	// we get its value from the settings manager
+	if ((iMask<=0)||(iMask>HT_ALL))
+	{
+		iMask=0;
+		SettingsManager& options=SettingsManager::Get();
+		for (int i=0; i<HT_COUNT; ++i)
+		{
+			if (options.GetHashMethodEnabled((HashType)i))
+				iMask |= 1<<i;
+		}
+	}
 	// Get actual selection if any
 	int iItem=m_cmbHashType->GetSelection();
 	HashType iType=HT_UNKNOWN;
@@ -70,10 +83,10 @@ void File2CheckPanel::UpdateEnabledHashTypes()
 		iType=GetSelectedHashType();
 	m_cmbHashType->Freeze();
 	m_cmbHashType->Clear();
-	SettingsManager& options=SettingsManager::Get();
+
 	for (int i=0; i<HT_COUNT; ++i)
 	{
-		if (options.GetHashMethodEnabled((HashType)i))
+		if (iMask & (1<<i))
 		{
 			iItem=m_cmbHashType->Append(wxGetTranslation(szHashNames[i]), (void*)wxUIntPtr(i));
 			if (i==iType)
@@ -200,6 +213,14 @@ void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
 		m_thread=NULL;
 		return;
 	}
+	// Create the enabled hash methods mask from the client datas of the combobox
+	int iMask=0, iCount=m_cmbHashType->GetCount();
+	for (int i=0; i<iCount; ++i)
+	{
+		int iType=(int)m_cmbHashType->GetClientData(i);
+		iMask |= 1<<iType;
+	}
+	m_thread->SetHashingFilter(iMask);
 	m_txtFileName->Disable();
 	m_btnBrowse->Disable();
 	m_thread->Run();

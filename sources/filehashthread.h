@@ -14,6 +14,7 @@ class FileHashThread : public wxThread
 		FileHashThread(wxEvtHandler* handler);
 		virtual ~FileHashThread();
 		bool SetFile2Hash(const wxString& filename);
+		void SetHashingFilter(int mask);
 		const wxString& GetLastError() { return m_sLastError; }
 		wxString GetHexDigest(HashType type);
 	protected:

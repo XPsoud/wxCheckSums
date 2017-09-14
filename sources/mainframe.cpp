@@ -197,14 +197,34 @@ void MainFrame::OnPreferencesClicked(wxCommandEvent& event)
 {
 	// Save the "KeepLang" state
 	bool bOldLng=m_settings.GetProhibitI18N();
+	// Save the enabled methods state
+	int iMask=0;
+	for (int i=0; i<HT_COUNT; ++i)
+		if (m_settings.GetHashMethodEnabled((HashType)i))
+			iMask |= 1<<i;
+
 	DlgOptions dlg(this);
 	dlg.ShowModal();
 	if (m_settings.GetProhibitI18N()!=bOldLng)
 	{
 		wxMessageBox(_("You changed the translation settings.\nYou must restart the application to see this in effect."), _("Restart needed"), wxICON_INFORMATION|wxCENTER|wxOK);
 	}
-	for (int i=0; i<FILESPANEL_COUNT; ++i)
-		m_pnlFile[i]->UpdateEnabledHashTypes();
+	// Check if the enabled method state has changed
+	int iMask2=0;
+	for (int i=0; i<HT_COUNT; ++i)
+		if (m_settings.GetHashMethodEnabled((HashType)i))
+			iMask2 |= 1<<i;
+	// If it has changed, ask the user if he want to update the filter panel
+	if (iMask2!=iMask)
+	{
+		int iRes=wxMessageBox(_("You changed the enabled/disabled state of hashing methods.\nDo you want to update the temporary values ?"), _("Filter changed"), wxICON_QUESTION|wxYES_NO|wxCENTER);
+		if (iRes==wxYES)
+		{
+			m_pnlFilter->UpdateFromSettings();
+			for (int i=0; i<FILESPANEL_COUNT; ++i)
+				m_pnlFile[i]->UpdateEnabledHashTypes(iMask2);
+		}
+	}
 }
 
 void MainFrame::OnExitClicked(wxCommandEvent& event)
@@ -294,5 +314,8 @@ void MainFrame::OnFilePanelEvent(wxCommandEvent& event)
 
 void MainFrame::OnFilterChanged(wxCommandEvent& event)
 {
-	//
+	for (int i=0; i<FILESPANEL_COUNT; ++i)
+	{
+		m_pnlFile[i]->UpdateEnabledHashTypes(event.GetInt());
+	}
 }

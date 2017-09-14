@@ -12,6 +12,7 @@ class FilterPanel : public wxPanel
 	public:
 		FilterPanel(wxWindow* parent);
 		virtual ~FilterPanel();
+		void UpdateFromSettings();
 	private:
 		// Misc functions
 		void CreateControls();
