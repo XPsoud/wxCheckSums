@@ -224,6 +224,10 @@ void File2CheckPanel::OnFilenameChanged(wxCommandEvent& event)
 	m_txtFileName->Disable();
 	m_btnBrowse->Disable();
 	m_thread->Run();
+#ifdef __WXDEBUG__
+	m_dtStart=wxDateTime::UNow();
+	wxPrintf(_T("File2CheckPanel(Id=%d) : Started calculation on %s\n"), GetId(), m_dtStart.Format(_T("%c,%l")));
+#endif // __WXDEBUG__
 
 	wxCommandEvent evt(wxEVT_FILEPANEL_STARTED, GetId());
 	AddPendingEvent(evt);
@@ -263,6 +267,12 @@ void File2CheckPanel::OnThreadEvent(wxThreadEvent& event)
 {
 	if (event.GetEventType()==wxEVT_THREAD_ENDED)
 	{
+#ifdef __WXDEBUG__
+		wxDateTime dtEnd=wxDateTime::UNow();
+		wxTimeSpan duration=dtEnd-m_dtStart;
+		wxPrintf(_T("File2CheckPanel(Id=%d) : Calculation ended on %s\n"), GetId(), dtEnd.Format(_T("%c,%l")));
+		wxPrintf(_T("\tDuration : %s\n"), duration.Format(_T("%H:%M:%S,%l")));
+#endif // __wxDEBUG__
 		if (m_pgbProgress->IsShown())
 		{
 			m_cmbHashType->Show();

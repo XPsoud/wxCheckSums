@@ -46,6 +46,9 @@ class File2CheckPanel : public wxPanel
 		// Misc vars
 		FileHashThread *m_thread;
 		wxString m_sHash[HT_COUNT];
+#ifdef __WXDEBUG__
+		wxDateTime m_dtStart;
+#endif // __WXDEBUG__
 };
 
 #endif // __FILE2CHECKPANEL_H_INCLUDED__
