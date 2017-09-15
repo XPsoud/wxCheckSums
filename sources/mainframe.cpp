@@ -82,8 +82,14 @@ void MainFrame::CreateControls()
 	wxString sTxt=_T(" ") + wxGetApp().GetBuildInfos();
 	// Calculation of the needed width for this text
 	int widths[2];
+#ifndef __WXMSW__
+	wxStaticText *tmpLabel=new wxStaticText(this, wxID_STATIC, sTxt);
+	tmpLabel->GetSize(&widths[1], &widths[0]);
+	delete tmpLabel;
+#else
 	wxClientDC dc(stb);
 	dc.GetTextExtent(sTxt, &widths[1], &widths[0]);
+#endif
 	widths[0]=-1;
 	stb->SetStatusWidths(2, widths);
 
