@@ -81,7 +81,8 @@ void FilterPanel::OnFilterChanged(wxCommandEvent& event)
 		return;
 	}
 	// All is Ok : we can inform the main frame the the filter has changed
-	wxCommandEvent evt(wxEVT_FILTER_CHANGED);
+	wxCommandEvent evt(wxEVT_FILTER_CHANGED, GetId());
+	evt.SetEventObject(this);
 	// Create a bitmask with values
 	int iMask=0;
 	for (int i=0; i<HT_COUNT; ++i)

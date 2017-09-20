@@ -31,7 +31,7 @@ class MainFrame: public wxFrame
 		// Controls vars
 		wxNotebook *m_nBook;
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];
-		FilterPanel *m_pnlFilter;
+		FilterPanel *m_pnlFilter[3]; // One per tab
 		// Misc vars
 		SettingsManager& m_settings;
 };

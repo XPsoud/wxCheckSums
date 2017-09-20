@@ -127,8 +127,8 @@ void MainFrame::CreateControls()
 	// "1 - 2 files" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
-		m_pnlFilter=new FilterPanel(page);
-		szr->Add(m_pnlFilter, 0, wxALL|wxEXPAND, 0);
+		m_pnlFilter[0]=new FilterPanel(page);
+		szr->Add(m_pnlFilter[0], 0, wxALL|wxEXPAND, 0);
 		for (int i=0; i<FILESPANEL_COUNT; ++i)
 		{
 			m_pnlFile[i]=new File2CheckPanel(page, wxString::Format(_("File #%d"), i+1));
@@ -139,10 +139,18 @@ void MainFrame::CreateControls()
 
 	// "Multiple files" tab
 	page=new wxPanel(m_nBook, -1);
+	szr=new wxBoxSizer(wxVERTICAL);
+		m_pnlFilter[1]=new FilterPanel(page);
+		szr->Add(m_pnlFilter[1], 0, wxALL|wxEXPAND, 0);
+	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Multiple files"));
 
 	// "Simple text" tab
 	page=new wxPanel(m_nBook, -1);
+	szr=new wxBoxSizer(wxVERTICAL);
+		m_pnlFilter[2]=new FilterPanel(page);
+		szr->Add(m_pnlFilter[2], 0, wxALL|wxEXPAND, 0);
+	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Simple text"));
 
 	szrMain->Add(m_nBook, 1, wxALL|wxEXPAND, 0);
@@ -226,7 +234,8 @@ void MainFrame::OnPreferencesClicked(wxCommandEvent& event)
 		int iRes=wxMessageBox(_("You changed the enabled/disabled state of hashing methods.\nDo you want to update the temporary values ?"), _("Filter changed"), wxICON_QUESTION|wxYES_NO|wxCENTER);
 		if (iRes==wxYES)
 		{
-			m_pnlFilter->UpdateFromSettings();
+			for (int i=0; i<3; ++i)
+				m_pnlFilter[i]->UpdateFromSettings();
 			for (int i=0; i<FILESPANEL_COUNT; ++i)
 				m_pnlFile[i]->UpdateEnabledHashTypes(iMask2);
 		}
@@ -310,18 +319,39 @@ void MainFrame::OnFilePanelEvent(wxCommandEvent& event)
 	{
 		if (m_pnlFile[i]->IsRunning())
 		{
-			m_pnlFilter->Disable();
+			m_pnlFilter[0]->Disable();
 			return;
 		}
 	}
 	// If we get here, no file panel is running
-	m_pnlFilter->Enable();
+	m_pnlFilter[0]->Enable();
 }
 
 void MainFrame::OnFilterChanged(wxCommandEvent& event)
 {
-	for (int i=0; i<FILESPANEL_COUNT; ++i)
+	// Witch filterpanel sent this event ?
+	int iIndex=wxNOT_FOUND;
+	for (int i=0; i<3; ++i)
 	{
-		m_pnlFile[i]->UpdateEnabledHashTypes(event.GetInt());
+		if (event.GetId()==m_pnlFilter[i]->GetId())
+		{
+			iIndex=i;
+			break;
+		}
+	}
+	if (iIndex==wxNOT_FOUND)
+		return;
+	switch(iIndex)
+	{
+		case 0: // 1-2 files tab
+			for (int i=0; i<FILESPANEL_COUNT; ++i)
+			{
+				m_pnlFile[i]->UpdateEnabledHashTypes(event.GetInt());
+			}
+			break;
+		case 1: // Multiple files tab
+			break;
+		case 2: // Simple text tab
+			break;
 	}
 }
