@@ -3,6 +3,7 @@
 
 #include <wx/wx.h>
 #include <wx/notebook.h>
+#include <wx/dataview.h>
 
 class SettingsManager;
 class File2CheckPanel;
@@ -32,6 +33,7 @@ class MainFrame: public wxFrame
 		wxNotebook *m_nBook;
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];
 		FilterPanel *m_pnlFilter[3]; // One per tab
+		wxDataViewCtrl *m_dvcFiles;
 		// Misc vars
 		SettingsManager& m_settings;
 };

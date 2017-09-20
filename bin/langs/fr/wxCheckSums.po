@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-14 21:22+0100\n"
-"PO-Revision-Date: 2017-09-14 21:24+0100\n"
+"POT-Creation-Date: 2017-09-20 22:05+0100\n"
+"PO-Revision-Date: 2017-09-20 22:12+0100\n"
 "Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
@@ -162,19 +162,19 @@ msgstr "Copier la valeur affichée vers le presse papier"
 msgid "Copy all values to clipboard"
 msgstr "Copier toutes les valeurs vers le presse papier"
 
-#: sources/file2checkpanel.cpp:242
+#: sources/file2checkpanel.cpp:246
 msgid "Stop calculation ?"
 msgstr "Arrêter le calcul ?"
 
-#: sources/file2checkpanel.cpp:242
+#: sources/file2checkpanel.cpp:246
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: sources/file2checkpanel.cpp:342 sources/file2checkpanel.cpp:358
+#: sources/file2checkpanel.cpp:352 sources/file2checkpanel.cpp:368
 msgid "Unable to open the clipboard!"
 msgstr "Impossible d'ouvrir le presse papier !"
 
-#: sources/file2checkpanel.cpp:342 sources/file2checkpanel.cpp:358
+#: sources/file2checkpanel.cpp:352 sources/file2checkpanel.cpp:368
 msgid "Error"
 msgstr "Erreur"
 
@@ -198,28 +198,36 @@ msgstr "Une autre instance de cette application est déjà en train de tourner !
 msgid "Multiple instances forbidden"
 msgstr "Instances multiples interdites"
 
-#: sources/mainframe.cpp:98
+#: sources/mainframe.cpp:104
 msgid "Edit application settings"
 msgstr "Éditer les réglages de l'application"
 
-#: sources/mainframe.cpp:128
+#: sources/mainframe.cpp:134
 #, c-format
 msgid "File #%d"
 msgstr "Fichier N°%d"
 
-#: sources/mainframe.cpp:132
+#: sources/mainframe.cpp:138
 msgid "1-2 files"
 msgstr "1-2 fichiers"
 
-#: sources/mainframe.cpp:136
+#: sources/mainframe.cpp:147
+msgid "File"
+msgstr "Fichier"
+
+#: sources/mainframe.cpp:150
+msgid "Status"
+msgstr "État"
+
+#: sources/mainframe.cpp:154
 msgid "Multiple files"
 msgstr "Fichiers multiples"
 
-#: sources/mainframe.cpp:140
+#: sources/mainframe.cpp:162
 msgid "Simple text"
 msgstr "Texte simple"
 
-#: sources/mainframe.cpp:210
+#: sources/mainframe.cpp:232
 msgid ""
 "You changed the translation settings.\n"
 "You must restart the application to see this in effect."
@@ -227,11 +235,11 @@ msgstr ""
 "Vous avez modifié les réglages de traduction.\n"
 "Vous devez redémarrer l'application pour que cela soit effectif."
 
-#: sources/mainframe.cpp:210
+#: sources/mainframe.cpp:232
 msgid "Restart needed"
 msgstr "Redémarrage nécessaire"
 
-#: sources/mainframe.cpp:220
+#: sources/mainframe.cpp:242
 msgid ""
 "You changed the enabled/disabled state of hashing methods.\n"
 "Do you want to update the temporary values ?"
@@ -239,23 +247,23 @@ msgstr ""
 "Vous avez modifié l'état activé/désactivé des méthodes de hachage.\n"
 "Voulez-vous mettre à jour les valeurs temporaires ?"
 
-#: sources/mainframe.cpp:220
+#: sources/mainframe.cpp:242
 msgid "Filter changed"
 msgstr "Filtre modifié"
 
-#: sources/mainframe.cpp:276
+#: sources/mainframe.cpp:299
 msgid "All checksums are identicals"
 msgstr "Toutes les sommes de contrôle sont identiques"
 
-#: sources/mainframe.cpp:282
+#: sources/mainframe.cpp:305
 msgid "Some checksums are the same but not all"
 msgstr "Des sommes de contrôle des fichiers sont identiques mais pas toutes"
 
-#: sources/mainframe.cpp:288
+#: sources/mainframe.cpp:311
 msgid "All checksums are differents"
 msgstr "Toutes les sommes de contrôle sont différentes"
 
-#: sources/mainframe.cpp:293
+#: sources/mainframe.cpp:316
 msgid "An error occurred whith checksums"
 msgstr "Une erreur est survenue avec les sommes de contrôle"
 

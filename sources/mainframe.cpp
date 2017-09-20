@@ -142,6 +142,14 @@ void MainFrame::CreateControls()
 	szr=new wxBoxSizer(wxVERTICAL);
 		m_pnlFilter[1]=new FilterPanel(page);
 		szr->Add(m_pnlFilter[1], 0, wxALL|wxEXPAND, 0);
+		m_dvcFiles=new wxDataViewCtrl(page, -1);
+			wxDataViewTextRenderer *tr=new wxDataViewTextRenderer();
+            wxDataViewColumn *col0=new wxDataViewColumn(_("File"), tr, 0, wxDVC_DEFAULT_WIDTH, wxALIGN_LEFT);
+            m_dvcFiles->AppendColumn(col0);
+			tr=new wxDataViewTextRenderer();
+            wxDataViewColumn *col1=new wxDataViewColumn(_("Status"), tr, 1, 200, wxALIGN_LEFT);
+            m_dvcFiles->AppendColumn(col1);
+		szr->Add(m_dvcFiles, 1, wxALL|wxEXPAND, 0);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Multiple files"));
 
