@@ -43,7 +43,7 @@ APP_DEP_FILES_C = $(APP_OBJ_FILES_C:$(BASE_OBJDIR)/$(APP_SRCDIR)/%.o=$(BASE_OBJD
 APPRES_SRC_FILES = $(wildcard $(APP_SRCDIR)/*.rc)
 APPRES_OBJ_FILES = $(APPRES_SRC_FILES:$(APP_SRCDIR)/%.rc=$(BASE_OBJDIR)/$(APP_SRCDIR)/%.res)
 
-WXLIBS = $(shell $(WXCONFIG) --libs base,core,xml,html)
+WXLIBS = $(shell $(WXCONFIG) --libs base,core,xml,adv)
 LIBS = $(WXLIBS)
 
 all : $(EXEC_NAME)
