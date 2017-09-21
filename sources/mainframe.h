@@ -8,6 +8,7 @@
 class SettingsManager;
 class File2CheckPanel;
 class FilterPanel;
+class File2CheckModel;
 
 #define FILESPANEL_COUNT 2
 class MainFrame: public wxFrame
@@ -36,6 +37,7 @@ class MainFrame: public wxFrame
 		wxDataViewCtrl *m_dvcFiles;
 		// Misc vars
 		SettingsManager& m_settings;
+		wxObjectDataPtr<File2CheckModel> m_f2cModel;
 };
 
 #endif // __MAINFRAME_H_INCLUDED__

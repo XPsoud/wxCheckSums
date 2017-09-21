@@ -311,6 +311,7 @@
 					<Add option="-O2" />
 					<Add option="`wx-config --cflags`" />
 					<Add directory="../sources" />
+					<Add directory="sources" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -364,6 +365,12 @@
 		</Unit>
 		<Unit filename="../sources/dlgoptions.h">
 			<Option virtualFolder="Dialogs/" />
+		</Unit>
+		<Unit filename="../sources/file2checkmodel.cpp">
+			<Option virtualFolder="Datas/" />
+		</Unit>
+		<Unit filename="../sources/file2checkmodel.h">
+			<Option virtualFolder="Datas/" />
 		</Unit>
 		<Unit filename="../sources/file2checkpanel.cpp">
 			<Option virtualFolder="Interface/" />

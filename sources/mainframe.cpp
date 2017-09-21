@@ -7,6 +7,7 @@
 #include "filterpanel.h"
 #include "settingsmanager.h"
 #include "file2checkpanel.h"
+#include "file2checkmodel.h"
 
 #include <wx/display.h>
 #include <wx/filedlg.h>
@@ -143,6 +144,8 @@ void MainFrame::CreateControls()
 		m_pnlFilter[1]=new FilterPanel(page);
 		szr->Add(m_pnlFilter[1], 0, wxALL|wxEXPAND, 0);
 		m_dvcFiles=new wxDataViewCtrl(page, -1);
+			m_f2cModel=new File2CheckModel();
+			m_dvcFiles->AssociateModel(m_f2cModel.get());
 			wxDataViewTextRenderer *tr=new wxDataViewTextRenderer();
             wxDataViewColumn *col0=new wxDataViewColumn(_("File"), tr, 0, wxDVC_DEFAULT_WIDTH, wxALIGN_LEFT);
             m_dvcFiles->AppendColumn(col0);
