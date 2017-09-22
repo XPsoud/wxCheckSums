@@ -103,9 +103,9 @@ void MainFrame::CreateControls()
 	wxMenu *fileMenu = new wxMenu();
 
 		fileMenu->Append(wxID_PREFERENCES, wxGetStockLabel(wxID_PREFERENCES, wxSTOCK_WITH_MNEMONIC|wxSTOCK_WITH_ACCELERATOR), _("Edit application settings"));
-
+#ifndef __WXMAC__
 		fileMenu->AppendSeparator();
-
+#endif // __WXMAC__
 		fileMenu->Append(wxID_EXIT, wxGetStockLabel(wxID_EXIT, wxSTOCK_WITH_MNEMONIC|wxSTOCK_WITH_ACCELERATOR), wxGetStockHelpString(wxID_EXIT));
 
 	menuBar->Append(fileMenu, wxGetStockLabel(wxID_FILE));
@@ -117,6 +117,10 @@ void MainFrame::CreateControls()
 		menuBar->Append(helpMenu, wxGetStockLabel(wxID_HELP));
 
 	SetMenuBar(menuBar);
+#ifdef __WXMAC__
+	menuBar->Remove(1);
+	menuBar->Remove(0);
+#endif // __WXMAC__
 
 	// Controls
 	m_nBook=new wxNotebook(this, -1);
