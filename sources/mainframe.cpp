@@ -118,8 +118,12 @@ void MainFrame::CreateControls()
 
 	SetMenuBar(menuBar);
 #ifdef __WXMAC__
+	// Remove and delete the empty Help menu
 	menuBar->Remove(1);
+	delete helpMenu;
+	// Remove and delete then empty File menu
 	menuBar->Remove(0);
+	delete fileMenu;
 #endif // __WXMAC__
 
 	// Controls
