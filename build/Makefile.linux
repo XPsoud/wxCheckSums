@@ -13,6 +13,10 @@ CPP_SRC_FILES = $(wildcard $(BASE_SRCDIR)/$(CPP_SRCDIR)/*.cpp)
 OBJ_SRC_FILES = $(CPP_SRC_FILES:$(BASE_SRCDIR)/$(CPP_SRCDIR)/%.cpp=$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o)
 DEP_SRC_FILES = $(OBJ_SRC_FILES:$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o=$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.d)
 
+C_SRC_FILES = $(wildcard $(BASE_SRCDIR)/$(CPP_SRCDIR)/*.c)
+OBJ_SRC_FILES2 = $(C_SRC_FILES:$(BASE_SRCDIR)/$(CPP_SRCDIR)/%.c=$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o)
+DEP_SRC_FILES2 = $(OBJ_SRC_FILES2:$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o=$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.d)
+
 LIBS = `wx-config --libs` -lfontconfig
 
 all : $(EXEC_NAME)
@@ -26,14 +30,18 @@ minclean :
 prebuild :
 	@mkdir -p $(BASE_OBJDIR)/$(CPP_SRCDIR)
 
--include $(DEP_SRC_FILES)
+-include $(DEP_SRC_FILES) $(DEP_SRC_FILES2)
 
-$(EXEC_NAME) : prebuild $(OBJ_SRC_FILES)
+$(EXEC_NAME) : prebuild $(OBJ_SRC_FILES) $(OBJ_SRC_FILES2)
 	@echo Linking executable file \"$(EXEC_NAME)\"
-	@g++ -o $(EXEC_NAME) $(OBJ_SRC_FILES) $(LIBS)
+	@g++ -o $(EXEC_NAME) $(OBJ_SRC_FILES) $(OBJ_SRC_FILES2) $(LIBS)
 
 $(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o: $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.cpp $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.h
 	@echo Compiling $<
 	@g++ -MMD $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o: $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.c $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.h
+	@echo Compiling $<
+	@gcc -MMD $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: clean minclean
