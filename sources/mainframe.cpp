@@ -153,6 +153,13 @@ void MainFrame::CreateControls()
 		szr->Add(m_pnlFilter[1], 0, wxALL|wxEXPAND, 0);
 		m_dvcFiles=new wxDataViewCtrl(page, -1);
 			m_f2cModel=new File2CheckModel();
+					// Tests
+					m_f2cModel.get()->AddFile2Check(m_settings.GetSettingsPath()+_T("settings.xml"));
+					const wxXmlNode *node=m_f2cModel.get()->AddFile2Check(m_settings.GetSettingsPath()+_T("settings.xml"));
+					for (int i=0; i<HT_COUNT; ++i)
+					{
+						m_f2cModel.get()->SetItemChecksum(node, (HashType)i, wxString::Format(_T("%s Result"), szHashNames[i]));
+					}
 			m_dvcFiles->AssociateModel(m_f2cModel.get());
 			wxDataViewTextRenderer *tr=new wxDataViewTextRenderer();
             wxDataViewColumn *col0=new wxDataViewColumn(_("File"), tr, 0, wxDVC_DEFAULT_WIDTH, wxALIGN_LEFT);
