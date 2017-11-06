@@ -147,7 +147,7 @@ void MainFrame::CreateControls()
 		}
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("1-2 files"));
-/*
+
 	// "Multiple files" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
@@ -173,7 +173,7 @@ void MainFrame::CreateControls()
 		szr->Add(m_dvcFiles, 1, wxALL|wxEXPAND, 0);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Multiple files"));
-*/
+
 	// "Simple text" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
