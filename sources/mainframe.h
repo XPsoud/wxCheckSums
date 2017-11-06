@@ -33,11 +33,11 @@ class MainFrame: public wxFrame
 		// Controls vars
 		wxNotebook *m_nBook;
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];
-		FilterPanel *m_pnlFilter[3]; // One per tab
-		wxDataViewCtrl *m_dvcFiles;
+		FilterPanel *m_pnlFilter[2]; // One per tab
+		//wxDataViewCtrl *m_dvcFiles;
 		// Misc vars
 		SettingsManager& m_settings;
-		wxObjectDataPtr<File2CheckModel> m_f2cModel;
+		//wxObjectDataPtr<File2CheckModel> m_f2cModel;
 };
 
 #endif // __MAINFRAME_H_INCLUDED__

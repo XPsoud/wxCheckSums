@@ -133,10 +133,12 @@ void MainFrame::CreateControls()
 
 	szrMain=new wxBoxSizer(wxVERTICAL);
 
+	int iPnlFilter=0;
+
 	// "1 - 2 files" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
-		m_pnlFilter[0]=new FilterPanel(page);
+		m_pnlFilter[iPnlFilter]=new FilterPanel(page);
 		szr->Add(m_pnlFilter[0], 0, wxALL|wxEXPAND, 0);
 		for (int i=0; i<FILESPANEL_COUNT; ++i)
 		{
@@ -145,12 +147,13 @@ void MainFrame::CreateControls()
 		}
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("1-2 files"));
-
+/*
 	// "Multiple files" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
-		m_pnlFilter[1]=new FilterPanel(page);
-		szr->Add(m_pnlFilter[1], 0, wxALL|wxEXPAND, 0);
+		iPnlFilter++;
+		m_pnlFilter[iPnlFilter]=new FilterPanel(page);
+		szr->Add(m_pnlFilter[iPnlFilter], 0, wxALL|wxEXPAND, 0);
 		m_dvcFiles=new wxDataViewCtrl(page, -1);
 			m_f2cModel=new File2CheckModel();
 					// Tests
@@ -170,12 +173,13 @@ void MainFrame::CreateControls()
 		szr->Add(m_dvcFiles, 1, wxALL|wxEXPAND, 0);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Multiple files"));
-
+*/
 	// "Simple text" tab
 	page=new wxPanel(m_nBook, -1);
 	szr=new wxBoxSizer(wxVERTICAL);
-		m_pnlFilter[2]=new FilterPanel(page);
-		szr->Add(m_pnlFilter[2], 0, wxALL|wxEXPAND, 0);
+		iPnlFilter++;
+		m_pnlFilter[iPnlFilter]=new FilterPanel(page);
+		szr->Add(m_pnlFilter[iPnlFilter], 0, wxALL|wxEXPAND, 0);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Simple text"));
 
@@ -260,7 +264,7 @@ void MainFrame::OnPreferencesClicked(wxCommandEvent& event)
 		int iRes=wxMessageBox(_("You changed the enabled/disabled state of hashing methods.\nDo you want to update the temporary values ?"), _("Filter changed"), wxICON_QUESTION|wxYES_NO|wxCENTER);
 		if (iRes==wxYES)
 		{
-			for (int i=0; i<3; ++i)
+			for (size_t i=0; i<WXSIZEOF(m_pnlFilter); ++i)
 				m_pnlFilter[i]->UpdateFromSettings();
 			for (int i=0; i<FILESPANEL_COUNT; ++i)
 				m_pnlFile[i]->UpdateEnabledHashTypes(iMask2);
@@ -357,7 +361,7 @@ void MainFrame::OnFilterChanged(wxCommandEvent& event)
 {
 	// Witch filterpanel sent this event ?
 	int iIndex=wxNOT_FOUND;
-	for (int i=0; i<3; ++i)
+	for (size_t i=0; i<WXSIZEOF(m_pnlFilter); ++i)
 	{
 		if (event.GetId()==m_pnlFilter[i]->GetId())
 		{
