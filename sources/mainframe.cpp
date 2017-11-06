@@ -5,6 +5,7 @@
 #include "appversion.h"
 #include "dlgoptions.h"
 #include "filterpanel.h"
+#include "buttonsicons.h"
 #include "settingsmanager.h"
 #include "file2checkpanel.h"
 #include "file2checkmodel.h"
@@ -28,6 +29,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(NULL, -1, title),
 #endif // __WXDEBUG__
 
 	SetIcon(wxICON(appIcon)); // Defining app icon
+
+	m_arsResults.Clear();
 
 	CreateControls();
 
@@ -180,6 +183,25 @@ void MainFrame::CreateControls()
 		iPnlFilter++;
 		m_pnlFilter[iPnlFilter]=new FilterPanel(page);
 		szr->Add(m_pnlFilter[iPnlFilter], 0, wxALL|wxEXPAND, 0);
+
+		m_txtText2Hash=new wxTextCtrl(page, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxHSCROLL);
+		szr->Add(m_txtText2Hash, 1, wxALL|wxEXPAND, 5);
+
+		wxBoxSizer *lnszr=new wxBoxSizer(wxHORIZONTAL);
+			m_cmbHashType=new wxChoice(page, -1);
+				UpdateEnabledHashTypes();
+				m_cmbHashType->SetSelection(0);
+			lnszr->Add(m_cmbHashType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+			m_txtResult=new wxTextCtrl(page, -1, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
+				m_txtResult->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE));
+				lnszr->Add(m_txtResult, 1, wxLEFT, 5);
+				m_btnCopy=new wxBitmapButton(page, wxID_COPY, wxGet_copy_png_Bitmap());
+					m_btnCopy->SetToolTip(_("Copy displayed value to clipboard"));
+				lnszr->Add(m_btnCopy, 0, wxLEFT, 5);
+				m_btnCopyAll=new wxBitmapButton(page, wxID_PASTE, wxGet_copyall_png_Bitmap());
+					m_btnCopyAll->SetToolTip(_("Copy all values to clipboard"));
+				lnszr->Add(m_btnCopyAll, 0, wxLEFT, 5);
+		szr->Add(lnszr, 0, wxLEFT|wxRIGHT|wxBOTTOM|wxEXPAND, 5);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Simple text"));
 
@@ -201,12 +223,63 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_FILEPANEL_STOPPED, &MainFrame::OnFilePanelEvent, this);
 	Bind(wxEVT_FILTER_CHANGED, &MainFrame::OnFilterChanged, this);
 
+	m_cmbHashType->Bind(wxEVT_CHOICE, &MainFrame::OnCmbHashTypeChanged, this);
+	m_btnCopy->Bind(wxEVT_UPDATE_UI, &MainFrame::OnUpdateUI_BtnCopy, this);
+	m_btnCopy->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyclicked, this);
+	m_btnCopyAll->Bind(wxEVT_UPDATE_UI, &MainFrame::OnUpdateUI_BtnCopyAll, this);
+	m_btnCopyAll->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyAllclicked, this);
+
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
 	Bind(wxEVT_MENU, &MainFrame::OnExitClicked, this, wxID_EXIT);
 	Bind(wxEVT_MENU, &MainFrame::OnAboutClicked, this, wxID_ABOUT);
 }
 
+void MainFrame::UpdateEnabledHashTypes(int mask)
+{
+	int iMask=mask;
+	// If the mask correspond to an invalid value (<=0 or >HT_ALL)
+	// we get its value from the settings manager
+	if ((iMask<=0)||(iMask>HT_ALL))
+	{
+		iMask=0;
+		for (int i=0; i<HT_COUNT; ++i)
+		{
+			if (m_settings.GetHashMethodEnabled((HashType)i))
+				iMask |= 1<<i;
+		}
+	}
+	// Get actual selection if any
+	int iItem=m_cmbHashType->GetSelection();
+	HashType iType=HT_UNKNOWN;
+	if (iItem!=wxNOT_FOUND)
+		iType=GetSelectedHashType();
+	m_cmbHashType->Freeze();
+	m_cmbHashType->Clear();
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (iMask & (1<<i))
+		{
+			iItem=m_cmbHashType->Append(wxGetTranslation(szHashNames[i]), (void*)wxUIntPtr(i));
+			if (i==iType)
+				m_cmbHashType->SetSelection(iItem);
+		}
+	}
+	if (m_cmbHashType->GetSelection()==wxNOT_FOUND)
+		m_cmbHashType->SetSelection(0);
+	m_cmbHashType->Thaw();
+}
+
+HashType MainFrame::GetSelectedHashType()
+{
+	int iSel=m_cmbHashType->GetSelection();
+	if (iSel!=wxNOT_FOUND)
+	{
+		size_t iType=(size_t)m_cmbHashType->GetClientData(iSel);
+		return (HashType)iType;
+	}
+	return HT_UNKNOWN;
+}
 
 void MainFrame::OnSize(wxSizeEvent& event)
 {
@@ -382,6 +455,47 @@ void MainFrame::OnFilterChanged(wxCommandEvent& event)
 		case 1: // Multiple files tab
 			break;
 		case 2: // Simple text tab
+			UpdateEnabledHashTypes(event.GetInt());
 			break;
 	}
+}
+
+void MainFrame::OnText2HashChanged(wxCommandEvent& event)
+{
+	if (m_txtResult->IsEmpty())
+	{
+		m_arsResults.Clear();
+		m_txtResult->Clear();
+		return;
+	}
+	// Get the content of the wxTextCtrl
+	// Modify newlines chars if needed
+	// Calculate the checksums
+	// Update the wxArrayString with the results;
+	// Update the wxTextCtrl for the shown result
+}
+
+void MainFrame::OnCmbHashTypeChanged(wxCommandEvent& event)
+{
+	//
+}
+
+void MainFrame::OnUpdateUI_BtnCopy(wxUpdateUIEvent& event)
+{
+	event.Enable(m_txtResult->IsEmpty()==false);
+}
+
+void MainFrame::OnBtnCopyclicked(wxCommandEvent& event)
+{
+	//
+}
+
+void MainFrame::OnUpdateUI_BtnCopyAll(wxUpdateUIEvent& event)
+{
+	event.Enable(m_arsResults.IsEmpty()==false);
+}
+
+void MainFrame::OnBtnCopyAllclicked(wxCommandEvent& event)
+{
+	//
 }
