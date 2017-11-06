@@ -39,7 +39,7 @@ class MainFrame: public wxFrame
 		void OnUpdateUI_BtnCopy(wxUpdateUIEvent &event);
 		void OnBtnCopyclicked(wxCommandEvent &event);
 		void OnUpdateUI_BtnCopyAll(wxUpdateUIEvent &event);
-		void OnBtnCopyAllclicked(wxCommandEvent &event);
+		void OnBtnCopyAllClicked(wxCommandEvent &event);
 		// Controls vars
 		wxNotebook *m_nBook;
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];

@@ -14,6 +14,7 @@
 #include <wx/filedlg.h>
 #include <wx/artprov.h>
 #include <wx/xml/xml.h>
+#include <wx/clipbrd.h>
 #include <wx/wfstream.h>
 
 #ifndef __WXMSW__
@@ -223,11 +224,12 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_FILEPANEL_STOPPED, &MainFrame::OnFilePanelEvent, this);
 	Bind(wxEVT_FILTER_CHANGED, &MainFrame::OnFilterChanged, this);
 
+	m_txtText2Hash->Bind(wxEVT_TEXT, &MainFrame::OnText2HashChanged, this);
 	m_cmbHashType->Bind(wxEVT_CHOICE, &MainFrame::OnCmbHashTypeChanged, this);
 	m_btnCopy->Bind(wxEVT_UPDATE_UI, &MainFrame::OnUpdateUI_BtnCopy, this);
 	m_btnCopy->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyclicked, this);
 	m_btnCopyAll->Bind(wxEVT_UPDATE_UI, &MainFrame::OnUpdateUI_BtnCopyAll, this);
-	m_btnCopyAll->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyAllclicked, this);
+	m_btnCopyAll->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyAllClicked, this);
 
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
@@ -452,9 +454,11 @@ void MainFrame::OnFilterChanged(wxCommandEvent& event)
 				m_pnlFile[i]->UpdateEnabledHashTypes(event.GetInt());
 			}
 			break;
+/*
 		case 1: // Multiple files tab
 			break;
-		case 2: // Simple text tab
+*/
+		case 1: // Simple text tab
 			UpdateEnabledHashTypes(event.GetInt());
 			break;
 	}
@@ -462,22 +466,37 @@ void MainFrame::OnFilterChanged(wxCommandEvent& event)
 
 void MainFrame::OnText2HashChanged(wxCommandEvent& event)
 {
-	if (m_txtResult->IsEmpty())
+	m_arsResults.Clear();
+	if (m_txtText2Hash->IsEmpty())
 	{
-		m_arsResults.Clear();
 		m_txtResult->Clear();
 		return;
 	}
-	// Get the content of the wxTextCtrl
-	// Modify newlines chars if needed
-	// Calculate the checksums
-	// Update the wxArrayString with the results;
-	// Update the wxTextCtrl for the shown result
+	wxString sTxt=m_txtText2Hash->GetValue();
+// TODO (Xaviou#1#): Convert newlines chars if needed
+	CheckSums sum(sTxt, m_pnlFilter[WXSIZEOF(m_pnlFilter)-1]->GetFilterMask());;
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		m_arsResults.Add(sum.GetHexDigest((HashType)i));
+	}
+	int iType=GetSelectedHashType();
+	if (iType==HT_UNKNOWN)
+		iType=0;
+	if (m_settings.GetAlwaysUCase())
+		m_txtResult->ChangeValue(m_arsResults[iType].Upper());
+	else
+		m_txtResult->ChangeValue(m_arsResults[iType]);
 }
 
 void MainFrame::OnCmbHashTypeChanged(wxCommandEvent& event)
 {
-	//
+	HashType iType=GetSelectedHashType();
+	if (iType==HT_UNKNOWN)
+		return;
+	if (m_settings.GetAlwaysUCase())
+		m_txtResult->ChangeValue(m_arsResults[iType].Upper());
+	else
+		m_txtResult->ChangeValue(m_arsResults[iType]);
 }
 
 void MainFrame::OnUpdateUI_BtnCopy(wxUpdateUIEvent& event)
@@ -487,7 +506,13 @@ void MainFrame::OnUpdateUI_BtnCopy(wxUpdateUIEvent& event)
 
 void MainFrame::OnBtnCopyclicked(wxCommandEvent& event)
 {
-	//
+	if (!wxTheClipboard->Open())
+	{
+		wxMessageBox(_("Unable to open the clipboard!"), _("Error"), wxICON_EXCLAMATION|wxOK|wxCENTER);
+		return;
+	}
+	wxTheClipboard->SetData(new wxTextDataObject(m_txtResult->GetValue()));
+	wxTheClipboard->Close();
 }
 
 void MainFrame::OnUpdateUI_BtnCopyAll(wxUpdateUIEvent& event)
@@ -495,7 +520,23 @@ void MainFrame::OnUpdateUI_BtnCopyAll(wxUpdateUIEvent& event)
 	event.Enable(m_arsResults.IsEmpty()==false);
 }
 
-void MainFrame::OnBtnCopyAllclicked(wxCommandEvent& event)
+void MainFrame::OnBtnCopyAllClicked(wxCommandEvent& event)
 {
-	//
+	if (!wxTheClipboard->Open())
+	{
+		wxMessageBox(_("Unable to open the clipboard!"), _("Error"), wxICON_EXCLAMATION|wxOK|wxCENTER);
+		return;
+	}
+	wxString sData=wxEmptyString;
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (!m_arsResults[i].IsEmpty())
+		{
+			if (!sData.IsEmpty())
+				sData << _T("\n");
+			sData << m_arsResults[i];
+		}
+	}
+	wxTheClipboard->SetData(new wxTextDataObject(sData));
+	wxTheClipboard->Close();
 }
