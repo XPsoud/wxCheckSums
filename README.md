@@ -46,3 +46,4 @@ Not yet implemented
  - Files to check can be given using the command line. If 1 or 2 files, the first tab should be activated. If more than 2 files, the second tab will be the one visible.
 #### Options : ####
  - Add an option to specify witch tab should be displayed at application startup
+ - Add an option to automatically start (or not) checksums calculations when something is added to the _Multiple files_ tab

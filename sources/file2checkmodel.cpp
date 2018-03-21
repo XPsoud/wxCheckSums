@@ -45,7 +45,7 @@ void File2CheckModel::GetValue(wxVariant& variant, const wxDataViewItem& item, u
 				variant=node->GetAttribute(_T("Path"));
 				break;
 			case 1:
-				variant=wxEmptyString;
+				variant=wxGetTranslation(node->GetAttribute(_T("Status")));
 				break;
 		}
 	}
