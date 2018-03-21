@@ -30,6 +30,7 @@ class MainFrame: public wxFrame
 		void OnCheckSumsChanged(wxCommandEvent &event);
 		void OnFilePanelEvent(wxCommandEvent &event);
 		void OnFilterChanged(wxCommandEvent &event);
+		void OnFilesDropped(wxCommandEvent &event);
 		// Controls vars
 		wxNotebook *m_nBook;
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];

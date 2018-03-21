@@ -7,6 +7,16 @@
 
 #include "checksums.h"
 
+enum File2CheckStatus
+{
+	F2CS_UNKNOWN = 0,
+	F2CS_WAITING,
+	F2CS_CALCULATING,
+	F2CS_READY,
+
+	F2CS_COUNT
+};
+
 class File2CheckModel : public wxDataViewModel
 {
 	public:
@@ -18,13 +28,18 @@ class File2CheckModel : public wxDataViewModel
 		virtual bool SetValue( const wxVariant &variant, const wxDataViewItem &item, unsigned int col );
 		virtual wxDataViewItem GetParent( const wxDataViewItem &item ) const;
 		virtual bool IsContainer( const wxDataViewItem &item ) const;
+		virtual bool HasContainerColumns(const wxDataViewItem &item) const { return true; }
 		virtual unsigned int GetChildren( const wxDataViewItem &parent, wxDataViewItemArray &array ) const;
 		// Datas management
+		void Clear();
 		const wxXmlNode* AddFile2Check(const wxString& filename);
 		bool SetItemChecksum(const wxXmlNode* item, HashType type, const wxString& value);
-		void Clear();
+		bool SetItemChecksums(const wxXmlNode* item, const wxArrayInt& types, const wxArrayString& values);
+		int GetItemStatus(const wxXmlNode* item);
+		bool SetItemStatus(const wxXmlNode* item, int status);
 	protected:
 	private:
+		bool SetChecksum(const wxXmlNode* node, HashType type, const wxString& value);
 		wxXmlNode *m_rootItem;
 };
 

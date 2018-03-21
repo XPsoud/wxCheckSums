@@ -5,18 +5,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 22:05+0100\n"
-"PO-Revision-Date: 2017-09-20 22:12+0100\n"
+"POT-Creation-Date: 2018-03-21 17:33+0100\n"
+"PO-Revision-Date: 2018-03-21 17:34+0100\n"
 "Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ../../../\n"
+"X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;wxPLURAL\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-SearchPath-0: sources\n"
+
+#: sources/appversion.h:13
+msgid "wxCheckSums Application"
+msgstr "Application wxCheckSums"
 
 #: sources/checksums.cpp:5
 msgid "MD5"
@@ -146,6 +151,22 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Interdit"
 
+#: sources/file2checkmodel.cpp:4
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: sources/file2checkmodel.cpp:5
+msgid "Waiting"
+msgstr "En attente"
+
+#: sources/file2checkmodel.cpp:6
+msgid "Calculating"
+msgstr "Calcul en cours"
+
+#: sources/file2checkmodel.cpp:7
+msgid "Ready"
+msgstr "Prêt"
+
 #: sources/file2checkpanel.cpp:121
 msgid "..."
 msgstr "..."
@@ -198,36 +219,36 @@ msgstr "Une autre instance de cette application est déjà en train de tourner !
 msgid "Multiple instances forbidden"
 msgstr "Instances multiples interdites"
 
-#: sources/mainframe.cpp:104
+#: sources/mainframe.cpp:107
 msgid "Edit application settings"
 msgstr "Éditer les réglages de l'application"
 
-#: sources/mainframe.cpp:134
+#: sources/mainframe.cpp:147
 #, c-format
 msgid "File #%d"
 msgstr "Fichier N°%d"
 
-#: sources/mainframe.cpp:138
+#: sources/mainframe.cpp:151
 msgid "1-2 files"
 msgstr "1-2 fichiers"
 
-#: sources/mainframe.cpp:147
+#: sources/mainframe.cpp:163
 msgid "File"
 msgstr "Fichier"
 
-#: sources/mainframe.cpp:150
+#: sources/mainframe.cpp:166
 msgid "Status"
 msgstr "État"
 
-#: sources/mainframe.cpp:154
+#: sources/mainframe.cpp:170
 msgid "Multiple files"
 msgstr "Fichiers multiples"
 
-#: sources/mainframe.cpp:162
+#: sources/mainframe.cpp:182
 msgid "Simple text"
 msgstr "Texte simple"
 
-#: sources/mainframe.cpp:232
+#: sources/mainframe.cpp:254
 msgid ""
 "You changed the translation settings.\n"
 "You must restart the application to see this in effect."
@@ -235,11 +256,11 @@ msgstr ""
 "Vous avez modifié les réglages de traduction.\n"
 "Vous devez redémarrer l'application pour que cela soit effectif."
 
-#: sources/mainframe.cpp:232
+#: sources/mainframe.cpp:254
 msgid "Restart needed"
 msgstr "Redémarrage nécessaire"
 
-#: sources/mainframe.cpp:242
+#: sources/mainframe.cpp:264
 msgid ""
 "You changed the enabled/disabled state of hashing methods.\n"
 "Do you want to update the temporary values ?"
@@ -247,26 +268,22 @@ msgstr ""
 "Vous avez modifié l'état activé/désactivé des méthodes de hachage.\n"
 "Voulez-vous mettre à jour les valeurs temporaires ?"
 
-#: sources/mainframe.cpp:242
+#: sources/mainframe.cpp:264
 msgid "Filter changed"
 msgstr "Filtre modifié"
 
-#: sources/mainframe.cpp:299
+#: sources/mainframe.cpp:321
 msgid "All checksums are identicals"
 msgstr "Toutes les sommes de contrôle sont identiques"
 
-#: sources/mainframe.cpp:305
+#: sources/mainframe.cpp:327
 msgid "Some checksums are the same but not all"
 msgstr "Des sommes de contrôle des fichiers sont identiques mais pas toutes"
 
-#: sources/mainframe.cpp:311
+#: sources/mainframe.cpp:333
 msgid "All checksums are differents"
 msgstr "Toutes les sommes de contrôle sont différentes"
 
-#: sources/mainframe.cpp:316
+#: sources/mainframe.cpp:338
 msgid "An error occurred whith checksums"
 msgstr "Une erreur est survenue avec les sommes de contrôle"
-
-#: sources/appversion.h:13
-msgid "wxCheckSums Application"
-msgstr "Application wxCheckSums"

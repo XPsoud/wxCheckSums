@@ -8,11 +8,13 @@
 #include "settingsmanager.h"
 #include "file2checkpanel.h"
 #include "file2checkmodel.h"
+#include "filedroptargets.h"
 
 #include <wx/display.h>
 #include <wx/filedlg.h>
 #include <wx/artprov.h>
 #include <wx/xml/xml.h>
+#include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 
 #ifndef __WXMSW__
@@ -156,13 +158,6 @@ void MainFrame::CreateControls()
 		szr->Add(m_pnlFilter[iPnlFilter], 0, wxALL|wxEXPAND, 0);
 		m_dvcFiles=new wxDataViewCtrl(page, -1);
 			m_f2cModel=new File2CheckModel();
-					// Tests
-					m_f2cModel.get()->AddFile2Check(m_settings.GetSettingsPath()+_T("settings.xml"));
-					const wxXmlNode *node=m_f2cModel.get()->AddFile2Check(m_settings.GetSettingsPath()+_T("settings.xml"));
-					for (int i=0; i<HT_COUNT; ++i)
-					{
-						m_f2cModel.get()->SetItemChecksum(node, (HashType)i, wxString::Format(_T("%s Result"), szHashNames[i]));
-					}
 			m_dvcFiles->AssociateModel(m_f2cModel.get());
 			wxDataViewTextRenderer *tr=new wxDataViewTextRenderer();
             wxDataViewColumn *col0=new wxDataViewColumn(_("File"), tr, 0, wxDVC_DEFAULT_WIDTH, wxALIGN_LEFT);
@@ -173,6 +168,9 @@ void MainFrame::CreateControls()
 		szr->Add(m_dvcFiles, 1, wxALL|wxEXPAND, 0);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Multiple files"));
+
+	// Accept files dropped from file manager
+	m_dvcFiles->SetDropTarget(new MultiFilesDropTarget(this));
 
 	// "Simple text" tab
 	page=new wxPanel(m_nBook, -1);
@@ -200,6 +198,8 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_FILEPANEL_STARTED, &MainFrame::OnFilePanelEvent, this);
 	Bind(wxEVT_FILEPANEL_STOPPED, &MainFrame::OnFilePanelEvent, this);
 	Bind(wxEVT_FILTER_CHANGED, &MainFrame::OnFilterChanged, this);
+
+	Bind(wxEVT_FILES_DROPPED, &MainFrame::OnFilesDropped, this);
 
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
@@ -383,5 +383,14 @@ void MainFrame::OnFilterChanged(wxCommandEvent& event)
 			break;
 		case 2: // Simple text tab
 			break;
+	}
+}
+
+void MainFrame::OnFilesDropped(wxCommandEvent& event)
+{
+	wxArrayString arsFiles = wxStringTokenize(event.GetString(), _T("\n"));
+	for (size_t i=0; i<arsFiles.GetCount(); ++i)
+	{
+		m_f2cModel.get()->AddFile2Check(arsFiles[i]);
 	}
 }

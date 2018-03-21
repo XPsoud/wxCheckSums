@@ -1,5 +1,12 @@
 #include "file2checkmodel.h"
 
+const wxChar* szStatus[F2CS_COUNT] = {
+	_("Unknown"),
+	_("Waiting"),
+	_("Calculating"),
+	_("Ready")
+};
+
 File2CheckModel::File2CheckModel()
 {
 #ifdef __WXDEBUG__
@@ -63,7 +70,18 @@ bool File2CheckModel::SetValue(const wxVariant& variant, const wxDataViewItem& i
 
 wxDataViewItem File2CheckModel::GetParent(const wxDataViewItem& item) const
 {
-	return wxDataViewItem(0);
+	if (!item.IsOk()) // root item has no parent
+		return wxDataViewItem(0);
+
+	wxXmlNode* node = (wxXmlNode*)item.GetID();
+	if (node->GetName() == _T("F2Chk"))
+	{
+		return wxDataViewItem(0);
+	}
+	else
+	{
+		return wxDataViewItem(node->GetParent());
+	}
 }
 
 bool File2CheckModel::IsContainer(const wxDataViewItem& item) const
@@ -112,6 +130,12 @@ unsigned int File2CheckModel::GetChildren(const wxDataViewItem& parent, wxDataVi
 	return iCount;
 }
 
+void File2CheckModel::Clear()
+{
+	delete m_rootItem;
+	m_rootItem=NULL;
+}
+
 const wxXmlNode* File2CheckModel::AddFile2Check(const wxString& filename)
 {
 	if (filename.IsEmpty())
@@ -123,7 +147,12 @@ const wxXmlNode* File2CheckModel::AddFile2Check(const wxString& filename)
 		m_rootItem=new wxXmlNode(wxXML_ELEMENT_NODE, _T("Root"));
 	wxXmlNode *node=new wxXmlNode(wxXML_ELEMENT_NODE, _T("F2Chk"));
 		node->AddAttribute(_T("Path"), filename);
+		node->AddAttribute(_T("Status"), szStatus[F2CS_WAITING]);
 	m_rootItem->AddChild(node);
+
+	wxDataViewItem parent(0);
+	wxDataViewItem child(node);
+	ItemAdded(parent, child);
 
 	return node;
 }
@@ -143,24 +172,15 @@ bool File2CheckModel::SetItemChecksum(const wxXmlNode* item, HashType type, cons
 	{
 		if (node==item)
 		{
-			wxXmlNode *subNode=node->GetChildren();
-			while(subNode!=NULL)
+			if (SetChecksum(node, type, value))
 			{
-				if (subNode->GetName()==szHashNames[type])
-				{
-					// Replace the actual value
-					wxXmlNode *tmpNode=subNode->GetChildren();
-					subNode->RemoveChild(tmpNode);
-					delete tmpNode;
-					subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), value));
-					return true;
-				}
-				subNode=subNode->GetNext();
+				ItemChanged(wxDataViewItem(node));
+				return true;
 			}
-			subNode=new wxXmlNode(wxXML_ELEMENT_NODE, szHashNames[type]);
-			subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), value));
-			node->AddChild(subNode);
-			return true;
+			else
+			{
+				return false;
+			}
 		}
 		node=node->GetNext();
 	}
@@ -168,8 +188,108 @@ bool File2CheckModel::SetItemChecksum(const wxXmlNode* item, HashType type, cons
 
 }
 
-void File2CheckModel::Clear()
+bool File2CheckModel::SetItemChecksums(const wxXmlNode* item, const wxArrayInt& types, const wxArrayString& values)
 {
-	delete m_rootItem;
-	m_rootItem=NULL;
+	if (item == NULL)
+		return false;
+	if (types.GetCount()!=values.GetCount())
+		return false;
+
+	for (size_t i=0; i<types.GetCount(); ++i)
+	{
+		if (!SetChecksum(item, (HashType)types[i], values[i]))
+			return false;
+	}
+	ItemChanged(wxDataViewItem((void*)item));
+	return true;
+}
+
+int File2CheckModel::GetItemStatus(const wxXmlNode* item)
+{
+	if (item==NULL)
+		return F2CS_UNKNOWN;
+	if (m_rootItem==NULL)
+		return F2CS_UNKNOWN;
+	wxXmlNode *node=m_rootItem->GetChildren();
+	while(node!=NULL)
+	{
+		if (node==item)
+		{
+			wxString sStatus = node->GetAttribute(_T("Status"), szStatus[F2CS_UNKNOWN]);
+			for (int i=0; i<F2CS_COUNT; ++i)
+			{
+				if (sStatus == szStatus[i])
+					return i;
+			}
+			return F2CS_UNKNOWN;
+		}
+		node=node->GetNext();
+	}
+	return F2CS_UNKNOWN;
+}
+
+bool File2CheckModel::SetItemStatus(const wxXmlNode* item, int status)
+{
+	if (item == NULL)
+		return false;
+	if (m_rootItem == NULL)
+		return false;
+	if ((status <= F2CS_UNKNOWN)||(status >= F2CS_COUNT))
+		return false;
+	wxXmlNode *node=m_rootItem->GetChildren();
+	while(node!=NULL)
+	{
+		if (node == item)
+		{
+			if (node->HasAttribute(_T("Status")))
+				node->DeleteAttribute(_T("Status"));
+			node->AddAttribute(_T("Status"), szStatus[status]);
+			return true;
+		}
+		node = node->GetNext();
+	}
+
+	return false;
+}
+
+bool File2CheckModel::SetChecksum(const wxXmlNode* node, HashType type, const wxString& value)
+{
+	if (node==NULL)
+		return false;
+	if ((type<=HT_UNKNOWN)||(type>=HT_COUNT))
+		return false;
+	if (value.IsEmpty())
+		return false;
+	if (m_rootItem==NULL)
+		return false;
+	if (node->GetName()!=_T("F2Chk"))
+		return false;
+
+	wxXmlNode *itmNode = m_rootItem->GetChildren();
+	while(itmNode!=NULL)
+	{
+		if (itmNode == node)
+			break;
+		node = node->GetNext();
+	}
+	if (itmNode==NULL)
+		return false;
+	wxXmlNode *subNode=itmNode->GetChildren();
+	while(subNode!=NULL)
+	{
+		if (subNode->GetName()==szHashNames[type])
+		{
+			// Replace the actual value
+			wxXmlNode *tmpNode=subNode->GetChildren();
+			subNode->RemoveChild(tmpNode);
+			delete tmpNode;
+			subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), value));
+			return true;
+		}
+		subNode=subNode->GetNext();
+	}
+	subNode=new wxXmlNode(wxXML_ELEMENT_NODE, szHashNames[type]);
+	subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), value));
+	itmNode->AddChild(subNode);
+	return true;
 }
