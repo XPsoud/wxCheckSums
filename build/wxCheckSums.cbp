@@ -4,7 +4,7 @@
 	<Project>
 		<Option title="wxCheckSums" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Graphx/;Misc/;Interface/;Datas/;Dialogs/;CheckSums/;" />
+		<Option virtualFolders="Graphx\;Misc\;Interface\;Datas\;Dialogs\;CheckSums\;" />
 		<Build>
 			<Target title="ReleaseGcc32">
 				<Option platforms="Windows;" />
@@ -161,7 +161,7 @@
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
 				<Option type="0" />
-				<Option compiler="gcc_tdm" />
+				<Option compiler="gcc64" />
 				<Option projectCompilerOptionsRelation="2" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="2" />
@@ -206,7 +206,7 @@
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Debug$(COMP)$(ARCHI)" />
 				<Option type="1" />
-				<Option compiler="gcc_tdm" />
+				<Option compiler="gcc64" />
 				<Option projectCompilerOptionsRelation="2" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="2" />
@@ -250,7 +250,7 @@
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)S" />
 				<Option type="0" />
-				<Option compiler="gcc_tdm" />
+				<Option compiler="gcc64" />
 				<Option projectCompilerOptionsRelation="2" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="2" />
@@ -325,7 +325,7 @@
 				</Linker>
 			</Target>
 			<Environment>
-				<Variable name="WX_DIR" value="C:/wx$(WX_VERSION)" />
+				<Variable name="WX_DIR" value="C:\wx$(WX_VERSION)" />
 			</Environment>
 		</Build>
 		<VirtualTargets>
