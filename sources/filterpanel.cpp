@@ -31,6 +31,16 @@ void FilterPanel::UpdateFromSettings()
 		m_chkHashType[i]->SetValue(SettingsManager::Get().GetHashMethodEnabled((HashType)i));
 }
 
+int FilterPanel::GetFilterMask()
+{
+	// Create a bitmask with values
+	int iMask=0;
+	for (int i=0; i<HT_COUNT; ++i)
+		if (m_chkHashType[i]->IsChecked())
+			iMask |= 1 << i;
+	return iMask;
+}
+
 void FilterPanel::CreateControls()
 {
 	wxBoxSizer* mainsizer=new wxBoxSizer(wxVERTICAL);
@@ -83,12 +93,7 @@ void FilterPanel::OnFilterChanged(wxCommandEvent& event)
 	// All is Ok : we can inform the main frame the the filter has changed
 	wxCommandEvent evt(wxEVT_FILTER_CHANGED, GetId());
 	evt.SetEventObject(this);
-	// Create a bitmask with values
-	int iMask=0;
-	for (int i=0; i<HT_COUNT; ++i)
-		if (m_chkHashType[i]->IsChecked())
-			iMask |= 1 << i;
 
-	evt.SetInt(iMask);
+	evt.SetInt(GetFilterMask());
 	AddPendingEvent(evt);
 }
