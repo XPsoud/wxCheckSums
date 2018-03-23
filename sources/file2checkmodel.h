@@ -33,10 +33,11 @@ class File2CheckModel : public wxDataViewModel
 		// Datas management
 		void Clear();
 		const wxXmlNode* AddFile2Check(const wxString& filename);
+		const wxXmlNode* GetFirstItem(const int status = F2CS_UNKNOWN);
 		bool SetItemChecksum(const wxXmlNode* item, HashType type, const wxString& value);
 		bool SetItemChecksums(const wxXmlNode* item, const wxArrayInt& types, const wxArrayString& values);
 		int GetItemStatus(const wxXmlNode* item);
-		bool SetItemStatus(const wxXmlNode* item, int status);
+		bool SetItemStatus(const wxXmlNode* item, int status, int percent=0);
 	protected:
 	private:
 		bool SetChecksum(const wxXmlNode* node, HashType type, const wxString& value);

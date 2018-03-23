@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxCheckSums\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-21 17:33+0100\n"
-"PO-Revision-Date: 2018-03-21 17:34+0100\n"
+"POT-Creation-Date: 2018-03-22 14:19+0100\n"
+"PO-Revision-Date: 2018-03-22 14:19+0100\n"
 "Last-Translator: Xaviou <x.psoud@gmail.com>\n"
 "Language-Team: Xaviou <x.psoud@gmail.com>\n"
 "Language: fr_FR\n"
@@ -166,6 +166,11 @@ msgstr "Calcul en cours"
 #: sources/file2checkmodel.cpp:7
 msgid "Ready"
 msgstr "Prêt"
+
+#: sources/file2checkmodel.cpp:54
+#, c-format
+msgid "(%d%% done)"
+msgstr "(%d%% effectués)"
 
 #: sources/file2checkpanel.cpp:121
 msgid "..."

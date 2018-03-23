@@ -5,6 +5,7 @@
 #include "appversion.h"
 #include "dlgoptions.h"
 #include "filterpanel.h"
+#include "filehashthread.h"
 #include "settingsmanager.h"
 #include "file2checkpanel.h"
 #include "file2checkmodel.h"
@@ -28,6 +29,9 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(NULL, -1, title),
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"MainFrame\" object\n"));
 #endif // __WXDEBUG__
+
+	m_thread = NULL;
+	m_pCurCalc = NULL;
 
 	SetIcon(wxICON(appIcon)); // Defining app icon
 
@@ -200,6 +204,8 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_FILTER_CHANGED, &MainFrame::OnFilterChanged, this);
 
 	Bind(wxEVT_FILES_DROPPED, &MainFrame::OnFilesDropped, this);
+	Bind(wxEVT_THREAD_WORKING, &MainFrame::OnThreadEvent, this);
+	Bind(wxEVT_THREAD_ENDED, &MainFrame::OnThreadEvent, this);
 
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
@@ -207,6 +213,24 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_MENU, &MainFrame::OnAboutClicked, this, wxID_ABOUT);
 }
 
+void MainFrame::StartNextCalculationThread()
+{
+	if (m_thread != NULL)
+		return;
+	const wxXmlNode* item = m_f2cModel.get()->GetFirstItem(F2CS_WAITING);
+	if (item == NULL)
+		return;
+	m_pCurCalc = (wxXmlNode*)item;
+	m_thread = new FileHashThread(this);
+	if (!m_thread->SetFile2Hash(item->GetAttribute(_T("Path"))))
+	{
+		delete m_thread;
+		m_thread = NULL;
+		return;
+	}
+	m_thread->SetHashingFilter(m_pnlFilter[1]->GetFilterMask());
+	m_thread->Run();
+}
 
 void MainFrame::OnSize(wxSizeEvent& event)
 {
@@ -392,5 +416,49 @@ void MainFrame::OnFilesDropped(wxCommandEvent& event)
 	for (size_t i=0; i<arsFiles.GetCount(); ++i)
 	{
 		m_f2cModel.get()->AddFile2Check(arsFiles[i]);
+	}
+	if (m_thread == NULL)
+	{
+		StartNextCalculationThread();
+	}
+}
+
+void MainFrame::OnThreadEvent(wxThreadEvent& event)
+{
+	if (m_pCurCalc==NULL)
+		return;
+
+	if (event.GetEventType()==wxEVT_THREAD_ENDED)
+	{
+		if (event.GetInt()!=-1)
+		{
+			wxArrayInt ariTypes;
+			wxArrayString arsHashes;
+			wxString sHash;
+			for (int i=0; i<HT_COUNT; ++i)
+			{
+				sHash = m_thread->GetHexDigest((HashType)i);
+				if (!sHash.IsEmpty())
+				{
+					ariTypes.Add(i);
+					arsHashes.Add(sHash);
+				}
+			}
+			m_f2cModel.get()->SetItemChecksums(m_pCurCalc, ariTypes, arsHashes);
+			m_f2cModel.get()->SetItemStatus(m_pCurCalc, F2CS_READY);
+		}
+		else
+		{
+			m_f2cModel.get()->SetItemStatus(m_pCurCalc, F2CS_WAITING);
+		}
+		delete m_thread;
+		m_thread = NULL;
+		StartNextCalculationThread();
+		return;
+	}
+	if (event.GetEventType()==wxEVT_THREAD_WORKING)
+	{
+		m_f2cModel.get()->SetItemStatus(m_pCurCalc, F2CS_CALCULATING, event.GetInt()/10);
+		return;
 	}
 }

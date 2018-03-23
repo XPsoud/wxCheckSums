@@ -37,6 +37,8 @@ void File2CheckModel::GetValue(wxVariant& variant, const wxDataViewItem& item, u
 	if (!item.IsOk())
 		return;
 	wxXmlNode *node=(wxXmlNode*)item.GetID();
+	wxString sValue;
+	long lValue;
 	if (node->GetName()==_T("F2Chk")) // First level entry ?
 	{
 		switch(col)
@@ -45,7 +47,16 @@ void File2CheckModel::GetValue(wxVariant& variant, const wxDataViewItem& item, u
 				variant=node->GetAttribute(_T("Path"));
 				break;
 			case 1:
-				variant=wxGetTranslation(node->GetAttribute(_T("Status")));
+				sValue = node->GetAttribute(_T("Status"));
+				if (sValue == szStatus[F2CS_CALCULATING])
+				{
+					node->GetAttribute(_T("Percent"), _T("0")).ToLong(&lValue);
+					variant = wxGetTranslation(sValue) + _T(" : ") + wxString::Format(_("(%d%% done)"), lValue);
+				}
+				else
+				{
+					variant = wxGetTranslation(sValue);
+				}
 				break;
 		}
 	}
@@ -157,6 +168,24 @@ const wxXmlNode* File2CheckModel::AddFile2Check(const wxString& filename)
 	return node;
 }
 
+const wxXmlNode* File2CheckModel::GetFirstItem(const int status)
+{
+	if (m_rootItem==NULL)
+		return NULL;
+	if ((status<F2CS_UNKNOWN)||(status>=F2CS_COUNT))
+		return NULL;
+	wxXmlNode *node = m_rootItem->GetChildren();
+
+	while(node!=NULL)
+	{
+		if ((status == F2CS_UNKNOWN) || (node->GetAttribute(_T("Status")) == szStatus[status]))
+			return node;
+		node = node->GetNext();
+	}
+	// Not found ?
+	return NULL;
+}
+
 bool File2CheckModel::SetItemChecksum(const wxXmlNode* item, HashType type, const wxString& value)
 {
 	if (item==NULL)
@@ -228,7 +257,7 @@ int File2CheckModel::GetItemStatus(const wxXmlNode* item)
 	return F2CS_UNKNOWN;
 }
 
-bool File2CheckModel::SetItemStatus(const wxXmlNode* item, int status)
+bool File2CheckModel::SetItemStatus(const wxXmlNode* item, int status, int percent)
 {
 	if (item == NULL)
 		return false;
@@ -244,6 +273,13 @@ bool File2CheckModel::SetItemStatus(const wxXmlNode* item, int status)
 			if (node->HasAttribute(_T("Status")))
 				node->DeleteAttribute(_T("Status"));
 			node->AddAttribute(_T("Status"), szStatus[status]);
+			if (status == F2CS_CALCULATING)
+			{
+				if (node->HasAttribute(_T("Percent")))
+					node->DeleteAttribute(_T("Percent"));
+				node->AddAttribute(_T("Percent"), wxString::Format(_T("%d"), percent));
+			}
+			ItemChanged(wxDataViewItem(node));
 			return true;
 		}
 		node = node->GetNext();
@@ -270,7 +306,7 @@ bool File2CheckModel::SetChecksum(const wxXmlNode* node, HashType type, const wx
 	{
 		if (itmNode == node)
 			break;
-		node = node->GetNext();
+		itmNode = itmNode->GetNext();
 	}
 	if (itmNode==NULL)
 		return false;
@@ -284,6 +320,7 @@ bool File2CheckModel::SetChecksum(const wxXmlNode* node, HashType type, const wx
 			subNode->RemoveChild(tmpNode);
 			delete tmpNode;
 			subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), value));
+			ItemChanged(wxDataViewItem(subNode));
 			return true;
 		}
 		subNode=subNode->GetNext();
@@ -291,5 +328,6 @@ bool File2CheckModel::SetChecksum(const wxXmlNode* node, HashType type, const wx
 	subNode=new wxXmlNode(wxXML_ELEMENT_NODE, szHashNames[type]);
 	subNode->AddChild(new wxXmlNode(wxXML_TEXT_NODE, _T(""), value));
 	itmNode->AddChild(subNode);
+	ItemAdded(wxDataViewItem(itmNode), wxDataViewItem(subNode));
 	return true;
 }
