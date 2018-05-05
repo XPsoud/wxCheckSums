@@ -4,7 +4,7 @@
 	<Project>
 		<Option title="wxCheckSums" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Graphx\;Misc\;Interface\;Datas\;Dialogs\;CheckSums\;" />
+		<Option virtualFolders="Graphx/;Misc/;Interface/;Datas/;Dialogs/;CheckSums/;" />
 		<Build>
 			<Target title="ReleaseGcc32">
 				<Option platforms="Windows;" />
@@ -324,8 +324,27 @@
 					<Add option="`wx-config --libs base, core, adv, xml`" />
 				</Linker>
 			</Target>
+			<Target title="Debug-Linux">
+				<Option platforms="Unix;" />
+				<Option output="../bin/wxCheckSumsD" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin" />
+				<Option object_output="./DebugLx/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="`wx-config --cflags`" />
+					<Add directory="../sources" />
+					<Add directory="sources" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs base, core, adv, xml`" />
+				</Linker>
+			</Target>
 			<Environment>
-				<Variable name="WX_DIR" value="C:\wx$(WX_VERSION)" />
+				<Variable name="WX_DIR" value="C:/wx$(WX_VERSION)" />
 			</Environment>
 		</Build>
 		<VirtualTargets>
