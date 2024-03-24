@@ -6,16 +6,33 @@ const wxChar* szHashNames[HT_COUNT] = { _("MD5"), _("SHA1"),
 										_("SHA224"), _("SHA256"),
 										_("SHA384"), _("SHA512") };
 
-CheckSums::CheckSums(const wxString& text) :
+CheckSums::CheckSums(const wxString& text, int htMask) :
 	m_md5(text), m_sha1(text), m_sha224(text),
 	m_sha256(text), m_sha384(text), m_sha512(text)
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Creating a \"CheckSums\" object\n"));
 #endif // __WXDEBUG__
-	SettingsManager& options=SettingsManager::Get();
-	for (int i=0; i<HT_COUNT; ++i)
-		m_bHash[i]=options.GetHashMethodEnabled((HashType)i);
+	if (htMask==HT_UNKNOWN)
+	{
+		SettingsManager& options=SettingsManager::Get();
+		for (int i=0; i<HT_COUNT; ++i)
+			m_bHash[i]=options.GetHashMethodEnabled((HashType)i);
+	}
+	else
+	{
+		int iMask=htMask;
+		if ((iMask<=0)||(iMask>HT_ALL))
+			iMask=1;
+		for (int i=0; i<HT_COUNT; ++i)
+		{
+
+			if (iMask & (1<<i))
+				m_bHash[i]=true;
+			else
+				m_bHash[i]=false;
+		}
+	}
 }
 
 CheckSums::~CheckSums()

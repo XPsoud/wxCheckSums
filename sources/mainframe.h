@@ -11,6 +11,7 @@ class FilterPanel;
 class File2CheckModel;
 class FileHashThread;
 class wxXmlNode;
+#include "checksums.h"
 
 #define FILESPANEL_COUNT 2
 class MainFrame: public wxFrame
@@ -23,6 +24,8 @@ class MainFrame: public wxFrame
 		void CreateControls();
 		void ConnectControls();
 		void StartNextCalculationThread();
+		void UpdateEnabledHashTypes(int mask=0); // For simple text panel
+		HashType GetSelectedHashType(); // For simple text panel
 		// Events handlers
 		void OnSize(wxSizeEvent &event);
 		void OnMove(wxMoveEvent &event);
@@ -40,11 +43,22 @@ class MainFrame: public wxFrame
 		File2CheckPanel *m_pnlFile[FILESPANEL_COUNT];
 		FilterPanel *m_pnlFilter[3]; // One per tab
 		wxDataViewCtrl *m_dvcFiles;
+		wxTextCtrl *m_txtText2Hash, *m_txtResult;
+		wxChoice *m_cmbHashType;
+		wxBitmapButton *m_btnCopy, *m_btnCopyAll;
 		// Misc vars
 		SettingsManager& m_settings;
 		wxObjectDataPtr<File2CheckModel> m_f2cModel;
 		FileHashThread *m_thread;
 		wxXmlNode *m_pCurCalc;
+		wxArrayString m_arsResults;
+		// Simple text panel events handlers
+		void OnText2HashChanged(wxCommandEvent &event);
+		void OnCmbHashTypeChanged(wxCommandEvent &event);
+		void OnUpdateUI_BtnCopy(wxUpdateUIEvent &event);
+		void OnBtnCopyclicked(wxCommandEvent &event);
+		void OnUpdateUI_BtnCopyAll(wxUpdateUIEvent &event);
+		void OnBtnCopyAllClicked(wxCommandEvent &event);
 };
 
 #endif // __MAINFRAME_H_INCLUDED__

@@ -31,10 +31,11 @@ wxCheckSums is a simple application for calculating checksums on files or simple
  - A "*filter panel*" is present on this tab to temporary override the enabled methods for the current session only (values not saved with the settings)
 
 ##### Multiple files #####
-Not yet implemented
+ - Work in progress (see the *multifiles* git branch)
 
 ##### Simple text #####
-Not yet implemented
+ - This page contains a multiline text box in witch you can type or paste any text.
+ - The wanted checksum is updated each time a change is detected in the text box
 
 
 ## To-Do ##

@@ -41,7 +41,7 @@ bool MyApp::OnInit()
 		m_locale.Init(wxLANGUAGE_DEFAULT, wxLOCALE_LOAD_DEFAULT);
 		m_locale.AddCatalog(_T(PRODUCTNAME));
 #ifdef __WXGTK__
-		m_locale.AddCatalog(_T("wxStd")); // Don't know yet why it isn't loaded automatically :-/
+		m_locale.AddCatalog(_T("wxstd")); // Don't know yet why it isn't loaded automatically :-/
 #endif // __WXGTK__
 	}
 

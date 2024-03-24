@@ -38,6 +38,7 @@ int FilterPanel::GetFilterMask()
 	for (int i=0; i<HT_COUNT; ++i)
 		if (m_chkHashType[i]->IsChecked())
 			iMask |= 1 << i;
+
 	return iMask;
 }
 

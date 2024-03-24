@@ -35,7 +35,7 @@ class File2CheckPanel : public wxPanel
 		void OnUpdateUI_BtnCopy(wxUpdateUIEvent &event);
 		void OnBtnCopyclicked(wxCommandEvent &event);
 		void OnUpdateUI_BtnCopyAll(wxUpdateUIEvent &event);
-		void OnBtnCopyAllclicked(wxCommandEvent &event);
+		void OnBtnCopyAllClicked(wxCommandEvent &event);
 		// Controls vars
 		wxBoxSizer *m_szrLine2;
 		wxTextCtrl *m_txtFileName, *m_txtResult;

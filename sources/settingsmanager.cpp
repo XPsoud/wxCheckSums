@@ -42,10 +42,10 @@ void SettingsManager::Initialize()
 {
 #ifdef __WXDEBUG__
 	wxPrintf(_T("Initializing the SettingsManager\n"));
-#endif // ENABLE_DEBUG_MSG
+#endif // __WXDEBUG__
 	// Full path of the application
 	wxFileName fname(wxStandardPaths::Get().GetExecutablePath());
-	fname.Normalize();
+	fname.Normalize(wxPATH_NATIVE);
 	m_sAppPath=fname.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
 	if (!m_sAppPath.EndsWith(wxFileName::GetPathSeparator()))
 		m_sAppPath.Append(wxFileName::GetPathSeparator());

@@ -6,6 +6,7 @@
 #include "dlgoptions.h"
 #include "filterpanel.h"
 #include "filehashthread.h"
+#include "buttonsicons.h"
 #include "settingsmanager.h"
 #include "file2checkpanel.h"
 #include "file2checkmodel.h"
@@ -16,6 +17,7 @@
 #include <wx/artprov.h>
 #include <wx/xml/xml.h>
 #include <wx/tokenzr.h>
+#include <wx/clipbrd.h>
 #include <wx/wfstream.h>
 
 #ifndef __WXMSW__
@@ -34,6 +36,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(NULL, -1, title),
 	m_pCurCalc = NULL;
 
 	SetIcon(wxICON(appIcon)); // Defining app icon
+
+	m_arsResults.Clear();
 
 	CreateControls();
 
@@ -182,6 +186,25 @@ void MainFrame::CreateControls()
 		iPnlFilter++;
 		m_pnlFilter[iPnlFilter]=new FilterPanel(page);
 		szr->Add(m_pnlFilter[iPnlFilter], 0, wxALL|wxEXPAND, 0);
+
+		m_txtText2Hash=new wxTextCtrl(page, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxHSCROLL);
+		szr->Add(m_txtText2Hash, 1, wxALL|wxEXPAND, 5);
+
+		wxBoxSizer *lnszr=new wxBoxSizer(wxHORIZONTAL);
+			m_cmbHashType=new wxChoice(page, -1);
+				UpdateEnabledHashTypes();
+				m_cmbHashType->SetSelection(0);
+			lnszr->Add(m_cmbHashType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+			m_txtResult=new wxTextCtrl(page, -1, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
+				m_txtResult->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE));
+				lnszr->Add(m_txtResult, 1, wxLEFT, 5);
+				m_btnCopy=new wxBitmapButton(page, wxID_COPY, wxGet_copy_png_Bitmap());
+					m_btnCopy->SetToolTip(_("Copy displayed value to clipboard"));
+				lnszr->Add(m_btnCopy, 0, wxLEFT, 5);
+				m_btnCopyAll=new wxBitmapButton(page, wxID_PASTE, wxGet_copyall_png_Bitmap());
+					m_btnCopyAll->SetToolTip(_("Copy all values to clipboard"));
+				lnszr->Add(m_btnCopyAll, 0, wxLEFT, 5);
+		szr->Add(lnszr, 0, wxLEFT|wxRIGHT|wxBOTTOM|wxEXPAND, 5);
 	page->SetSizer(szr);
 	m_nBook->AddPage(page, _("Simple text"));
 
@@ -207,6 +230,13 @@ void MainFrame::ConnectControls()
 	Bind(wxEVT_THREAD_WORKING, &MainFrame::OnThreadEvent, this);
 	Bind(wxEVT_THREAD_ENDED, &MainFrame::OnThreadEvent, this);
 
+	m_txtText2Hash->Bind(wxEVT_TEXT, &MainFrame::OnText2HashChanged, this);
+	m_cmbHashType->Bind(wxEVT_CHOICE, &MainFrame::OnCmbHashTypeChanged, this);
+	m_btnCopy->Bind(wxEVT_UPDATE_UI, &MainFrame::OnUpdateUI_BtnCopy, this);
+	m_btnCopy->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyclicked, this);
+	m_btnCopyAll->Bind(wxEVT_UPDATE_UI, &MainFrame::OnUpdateUI_BtnCopyAll, this);
+	m_btnCopyAll->Bind(wxEVT_BUTTON, &MainFrame::OnBtnCopyAllClicked, this);
+
 	// Menus events handlers
 	Bind(wxEVT_MENU, &MainFrame::OnPreferencesClicked, this, wxID_PREFERENCES);
 	Bind(wxEVT_MENU, &MainFrame::OnExitClicked, this, wxID_EXIT);
@@ -230,6 +260,51 @@ void MainFrame::StartNextCalculationThread()
 	}
 	m_thread->SetHashingFilter(m_pnlFilter[1]->GetFilterMask());
 	m_thread->Run();
+
+void MainFrame::UpdateEnabledHashTypes(int mask)
+{
+	int iMask=mask;
+	// If the mask correspond to an invalid value (<=0 or >HT_ALL)
+	// we get its value from the settings manager
+	if ((iMask<=0)||(iMask>HT_ALL))
+	{
+		iMask=0;
+		for (int i=0; i<HT_COUNT; ++i)
+		{
+			if (m_settings.GetHashMethodEnabled((HashType)i))
+				iMask |= 1<<i;
+		}
+	}
+	// Get actual selection if any
+	int iItem=m_cmbHashType->GetSelection();
+	HashType iType=HT_UNKNOWN;
+	if (iItem!=wxNOT_FOUND)
+		iType=GetSelectedHashType();
+	m_cmbHashType->Freeze();
+	m_cmbHashType->Clear();
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (iMask & (1<<i))
+		{
+			iItem=m_cmbHashType->Append(wxGetTranslation(szHashNames[i]), (void*)wxUIntPtr(i));
+			if (i==iType)
+				m_cmbHashType->SetSelection(iItem);
+		}
+	}
+	if (m_cmbHashType->GetSelection()==wxNOT_FOUND)
+		m_cmbHashType->SetSelection(0);
+	m_cmbHashType->Thaw();
+}
+
+HashType MainFrame::GetSelectedHashType()
+{
+	int iSel=m_cmbHashType->GetSelection();
+	if (iSel!=wxNOT_FOUND)
+	{
+		size_t iType=(size_t)m_cmbHashType->GetClientData(iSel);
+		return (HashType)iType;
+	}
+	return HT_UNKNOWN;
 }
 
 void MainFrame::OnSize(wxSizeEvent& event)
@@ -403,9 +478,12 @@ void MainFrame::OnFilterChanged(wxCommandEvent& event)
 				m_pnlFile[i]->UpdateEnabledHashTypes(event.GetInt());
 			}
 			break;
+/*
 		case 1: // Multiple files tab
 			break;
-		case 2: // Simple text tab
+*/
+		case 1: // Simple text tab
+			UpdateEnabledHashTypes(event.GetInt());
 			break;
 	}
 }
@@ -461,4 +539,80 @@ void MainFrame::OnThreadEvent(wxThreadEvent& event)
 		m_f2cModel.get()->SetItemStatus(m_pCurCalc, F2CS_CALCULATING, event.GetInt()/10);
 		return;
 	}
+
+void MainFrame::OnText2HashChanged(wxCommandEvent& event)
+{
+	m_arsResults.Clear();
+	if (m_txtText2Hash->IsEmpty())
+	{
+		m_txtResult->Clear();
+		return;
+	}
+	wxString sTxt=m_txtText2Hash->GetValue();
+// TODO (Xaviou#1#): Convert newlines chars if needed
+	CheckSums sum(sTxt, m_pnlFilter[WXSIZEOF(m_pnlFilter)-1]->GetFilterMask());;
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		m_arsResults.Add(sum.GetHexDigest((HashType)i));
+	}
+	int iType=GetSelectedHashType();
+	if (iType==HT_UNKNOWN)
+		iType=0;
+	if (m_settings.GetAlwaysUCase())
+		m_txtResult->ChangeValue(m_arsResults[iType].Upper());
+	else
+		m_txtResult->ChangeValue(m_arsResults[iType]);
+}
+
+void MainFrame::OnCmbHashTypeChanged(wxCommandEvent& event)
+{
+	HashType iType=GetSelectedHashType();
+	if (iType==HT_UNKNOWN)
+		return;
+	if (m_settings.GetAlwaysUCase())
+		m_txtResult->ChangeValue(m_arsResults[iType].Upper());
+	else
+		m_txtResult->ChangeValue(m_arsResults[iType]);
+}
+
+void MainFrame::OnUpdateUI_BtnCopy(wxUpdateUIEvent& event)
+{
+	event.Enable(m_txtResult->IsEmpty()==false);
+}
+
+void MainFrame::OnBtnCopyclicked(wxCommandEvent& event)
+{
+	if (!wxTheClipboard->Open())
+	{
+		wxMessageBox(_("Unable to open the clipboard!"), _("Error"), wxICON_EXCLAMATION|wxOK|wxCENTER);
+		return;
+	}
+	wxTheClipboard->SetData(new wxTextDataObject(m_txtResult->GetValue()));
+	wxTheClipboard->Close();
+}
+
+void MainFrame::OnUpdateUI_BtnCopyAll(wxUpdateUIEvent& event)
+{
+	event.Enable(m_arsResults.IsEmpty()==false);
+}
+
+void MainFrame::OnBtnCopyAllClicked(wxCommandEvent& event)
+{
+	if (!wxTheClipboard->Open())
+	{
+		wxMessageBox(_("Unable to open the clipboard!"), _("Error"), wxICON_EXCLAMATION|wxOK|wxCENTER);
+		return;
+	}
+	wxString sData=wxEmptyString;
+	for (int i=0; i<HT_COUNT; ++i)
+	{
+		if (!m_arsResults[i].IsEmpty())
+		{
+			if (!sData.IsEmpty())
+				sData << _T("\n");
+			sData << m_arsResults[i];
+		}
+	}
+	wxTheClipboard->SetData(new wxTextDataObject(sData));
+	wxTheClipboard->Close();
 }

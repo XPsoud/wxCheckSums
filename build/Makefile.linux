@@ -34,7 +34,7 @@ prebuild :
 
 $(EXEC_NAME) : prebuild $(OBJ_SRC_FILES) $(OBJ_SRC_FILES2)
 	@echo Linking executable file \"$(EXEC_NAME)\"
-	@g++ -o $(EXEC_NAME) $(OBJ_SRC_FILES) $(OBJ_SRC_FILES2) $(LIBS)
+	@g++ -o $(EXEC_NAME) -no-pie $(OBJ_SRC_FILES) $(OBJ_SRC_FILES2) $(LIBS)
 
 $(BASE_OBJDIR)/$(CPP_SRCDIR)/%.o: $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.cpp $(BASE_SRCDIR)/$(CPP_SRCDIR)/%.h
 	@echo Compiling $<

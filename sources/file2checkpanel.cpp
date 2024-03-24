@@ -167,7 +167,7 @@ void File2CheckPanel::ConnectControls()
 	m_btnCopy->Bind(wxEVT_UPDATE_UI, &File2CheckPanel::OnUpdateUI_BtnCopy, this);
 	m_btnCopy->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCopyclicked, this);
 	m_btnCopyAll->Bind(wxEVT_UPDATE_UI, &File2CheckPanel::OnUpdateUI_BtnCopyAll, this);
-	m_btnCopyAll->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCopyAllclicked, this);
+	m_btnCopyAll->Bind(wxEVT_BUTTON, &File2CheckPanel::OnBtnCopyAllClicked, this);
 }
 
 void File2CheckPanel::OnButtonBrowseClicked(wxCommandEvent& event)
@@ -361,7 +361,7 @@ void File2CheckPanel::OnUpdateUI_BtnCopyAll(wxUpdateUIEvent& event)
 	event.Enable(HasResult());
 }
 
-void File2CheckPanel::OnBtnCopyAllclicked(wxCommandEvent& event)
+void File2CheckPanel::OnBtnCopyAllClicked(wxCommandEvent& event)
 {
 	if (!wxTheClipboard->Open())
 	{

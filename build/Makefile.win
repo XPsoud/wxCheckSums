@@ -10,9 +10,9 @@ endif
 endif
 
 # Path to the wxWidgets base install dir
-WXWIN=C:\wx31
+WXWIN?=C:\wx32x
 # Sub path of the wxWidgets libs config file
-WXCFG=gcc_dll$(ARCHI)\mswu
+WXCFG?=gcc_dll$(ARCHI)\mswu
 # Path of the wx-config executable
 WXCONFIG_EXE=wx-config.exe
 # Name of the executable to create
@@ -44,7 +44,7 @@ APPRES_SRC_FILES = $(wildcard $(APP_SRCDIR)/*.rc)
 APPRES_OBJ_FILES = $(APPRES_SRC_FILES:$(APP_SRCDIR)/%.rc=$(BASE_OBJDIR)/$(APP_SRCDIR)/%.res)
 
 WXLIBS = $(shell $(WXCONFIG) --libs base,core,xml,adv)
-LIBS = $(WXLIBS)
+LIBS = $(WXLIBS) -loleacc
 
 all : $(EXEC_NAME)
 

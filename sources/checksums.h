@@ -26,7 +26,7 @@ extern const wxChar* szHashNames[HT_COUNT];
 class CheckSums
 {
 	public:
-		CheckSums(const wxString& text=wxEmptyString);
+		CheckSums(const wxString& text=wxEmptyString, int htMask=HT_UNKNOWN);
 		virtual ~CheckSums();
 		bool EnableHashType(HashType type, bool enable=true);
 		bool DisableHashType(HashType type) { return EnableHashType(type, false); }
