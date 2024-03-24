@@ -48,7 +48,7 @@
 					<Variable name="ARCHI" value="32" />
 					<Variable name="COMP" value="Gcc" />
 					<Variable name="DBG_FLG" value="" />
-					<Variable name="WX_VERSION" value="31" />
+					<Variable name="WX_VERSION" value="33" />
 				</Environment>
 			</Target>
 			<Target title="DebugGcc32">
@@ -92,7 +92,7 @@
 					<Variable name="ARCHI" value="32" />
 					<Variable name="COMP" value="Gcc" />
 					<Variable name="DBG_FLG" value="d" />
-					<Variable name="WX_VERSION" value="31" />
+					<Variable name="WX_VERSION" value="33" />
 				</Environment>
 			</Target>
 			<Target title="ReleaseGcc32S">
@@ -152,7 +152,7 @@
 					<Variable name="ARCHI" value="32" />
 					<Variable name="COMP" value="Gcc" />
 					<Variable name="DBG_FLG" value="" />
-					<Variable name="WX_VERSION" value="31" />
+					<Variable name="WX_VERSION" value="33" />
 				</Environment>
 			</Target>
 			<Target title="ReleaseGcc64">
@@ -161,7 +161,7 @@
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)" />
 				<Option type="0" />
-				<Option compiler="gcc64" />
+				<Option compiler="gnu_gcc64_compiler" />
 				<Option projectCompilerOptionsRelation="2" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="2" />
@@ -197,7 +197,7 @@
 					<Variable name="ARCHI" value="64" />
 					<Variable name="COMP" value="Gcc" />
 					<Variable name="DBG_FLG" value="" />
-					<Variable name="WX_VERSION" value="31" />
+					<Variable name="WX_VERSION" value="33" />
 				</Environment>
 			</Target>
 			<Target title="DebugGcc64">
@@ -206,7 +206,7 @@
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Debug$(COMP)$(ARCHI)" />
 				<Option type="1" />
-				<Option compiler="gcc64" />
+				<Option compiler="gnu_gcc64_compiler" />
 				<Option projectCompilerOptionsRelation="2" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="2" />
@@ -241,7 +241,7 @@
 					<Variable name="ARCHI" value="64" />
 					<Variable name="COMP" value="Gcc" />
 					<Variable name="DBG_FLG" value="d" />
-					<Variable name="WX_VERSION" value="31" />
+					<Variable name="WX_VERSION" value="33" />
 				</Environment>
 			</Target>
 			<Target title="ReleaseGcc64S">
@@ -250,7 +250,7 @@
 				<Option working_dir="../bin" />
 				<Option object_output="../build/Release$(COMP)$(ARCHI)S" />
 				<Option type="0" />
-				<Option compiler="gcc64" />
+				<Option compiler="gnu_gcc64_compiler" />
 				<Option projectCompilerOptionsRelation="2" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Option projectIncludeDirsRelation="2" />
@@ -301,7 +301,7 @@
 					<Variable name="ARCHI" value="64" />
 					<Variable name="COMP" value="Gcc" />
 					<Variable name="DBG_FLG" value="" />
-					<Variable name="WX_VERSION" value="31" />
+					<Variable name="WX_VERSION" value="33" />
 				</Environment>
 			</Target>
 			<Target title="Release-Linux">
@@ -326,7 +326,7 @@
 				</Linker>
 			</Target>
 			<Environment>
-				<Variable name="WX_DIR" value="C:/wx$(WX_VERSION)" />
+				<Variable name="WX_DIR" value="$(#wx33)" />
 			</Environment>
 		</Build>
 		<VirtualTargets>

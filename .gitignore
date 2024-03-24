@@ -12,11 +12,14 @@
 *.depend
 *.cdTemp
 
+# OSX Specific files
+.DS_Store
+
 # VS-Code settings folder
 .vscode
 
-# OSX specif files
-.DS_Store
+# MS link files
+*.lnk
 
 # Output and intermediate folders
 bin
