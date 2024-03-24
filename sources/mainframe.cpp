@@ -260,6 +260,7 @@ void MainFrame::StartNextCalculationThread()
 	}
 	m_thread->SetHashingFilter(m_pnlFilter[1]->GetFilterMask());
 	m_thread->Run();
+}
 
 void MainFrame::UpdateEnabledHashTypes(int mask)
 {
@@ -539,6 +540,7 @@ void MainFrame::OnThreadEvent(wxThreadEvent& event)
 		m_f2cModel.get()->SetItemStatus(m_pCurCalc, F2CS_CALCULATING, event.GetInt()/10);
 		return;
 	}
+}
 
 void MainFrame::OnText2HashChanged(wxCommandEvent& event)
 {
